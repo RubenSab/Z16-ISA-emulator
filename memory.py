@@ -20,7 +20,7 @@ class Memory:
         self.word_memory = [Word(0)]*(self.memory_byte_size//2)
 
 
-    def store_word(self, address, content: Word):
+    def write_word(self, address, content: Word):
         content = Word(content)
         if address >= self.memory_byte_size//2:
             raise MemoryIndexError(
@@ -30,7 +30,7 @@ class Memory:
         self.word_memory[address] = content
 
 
-    def load_word(self, address):
+    def read_word(self, address) -> Word:
         if address >= self.memory_byte_size//2:
             raise MemoryIndexError(
                 f"word location {address} doesn't exist "
@@ -39,7 +39,7 @@ class Memory:
         return self.word_memory[address]
 
 
-    def load_file(self, filename):
+    def load_memory_from(self, filename):
         with open(filename, "rb") as f:
             byte_sequence = f.read()
 
@@ -51,12 +51,12 @@ class Memory:
 
         # load two bytes (so one word) per memory location
         for i in range(0, len(byte_sequence), 2):
-            self.store_word(
+            self.write_word(
                 content = Word.from_bytes(byte_sequence[i:i+2]),
                 address = i//2
             )
 
-    # TODO: add dump_memory(filename)
+    # TODO: add dump_memory(filename), program counter and memory counter
 
     def __repr__(self):
         return str([word.to_hex() for word in self.word_memory])

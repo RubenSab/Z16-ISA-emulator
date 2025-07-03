@@ -10,13 +10,13 @@ class Registers:
     def __init__(self):
         self.registers = dict.fromkeys(REGISTER_NAMES, 0)
 
-    def read_register(self, register_name):
+    def read_word(self, register_name):
         if register_name == 'O':
             return 0
         self.validate_register_name(register_name)        
         return self.registers[register_name]
 
-    def write_register(self, register_name, content: Word):
+    def write_word(self, register_name, content: Word):
         content = Word(content)
         if register_name == 'O':
             pass

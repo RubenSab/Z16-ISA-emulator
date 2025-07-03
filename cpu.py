@@ -1,39 +1,45 @@
-from constants import INSTRUCTIONS
+from assembler import Assembler
+from memory import Memory
+from registers import Registers
+from deassembler import deassemble_word
+from registers import REGISTER_NAMES
+from instructions import INSTRUCTIONS, INSTRUCTIONS_LIST
+from counter import Counter
 
 class CPU:
-    def __init__(self, MEMORY_BYTE_SIZE, filename=None):
-        self.MEMORY_BYTE_SIZE = MEMORY_BYTE_SIZE
-        self.MEMORY_COUNTER_INIT = MEMORY_BYTE_SIZE//2
-        self.memory = [0 for i in range(MEMORY_BYTE_SIZE*2)]
-        self.registers = [0]*16
-        # implement memory, registers, program counter and memory counter as classes
-        self.filename = filename
-        if self.filename:
-            self.load_memory(self.filename)
+    def __init__(self, memory_size):
+        self.memory_size = memory_size
+        self.memory = Memory(memory_size)
+        self.registers = Registers()
+        self.program_counter = Counter(4)
+        self.memory_counter = Counter(4, self.memory_size//2)
 
-    def load_memory(self, filename):
-        with open(filename, "rb") as f:
-            byte_sequence = f.read()
+    def load_memory_from(self, filename):
+        self.memory.load_memory_from(filename)
 
-        for i in range(0, len(byte_sequence), 2):
-            self.memory[i//2] = byte_sequence[i:i+2]
 
-    def fetch(self, address: int) -> str:
-        first_byte = format(self.memory[address][0], '08b')
-        second_byte = format(self.memory[address][1], '08b')
-        return [
-            first_byte[:4],
-            first_byte[4:],
-            second_byte[:4],
-            second_byte[4:]
-        ]
+    def execute(self):
+        while True:
+            # Instruction fetch
+            instruction = self.memory.read_word(int(self.program_counter))
+
+            # Instruction decode
+            try:
+                parsed_instruction = deassemble_word(instruction)
+            except:
+                break
+
+            # Instruction execution
+            self.execute_parsed_instruction(parsed_instruction)
+
+            break #placeholder, program counter behaviour yet to implement
+
+    def execute_parsed_instruction(self, instruction: dict):
+        return instruction
+
 
 if __name__=='__main__':
-    from assembler import Assembler
-    assembler = Assembler('test')
-    assembler.assemble()
-    assembler.save('test_bytes')
-
-    a = CPU(64, 'test_bytes')
-    print(a.fetch(0))
-
+    cpu = CPU(64)
+    cpu.load_memory_from('bytes_test')
+    cpu.execute()
+    print(cpu.memory)
