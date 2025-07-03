@@ -1,4 +1,3 @@
-from assembler import Assembler
 from memory import Memory
 from registers import Registers
 from deassembler import deassemble_word
@@ -13,6 +12,7 @@ class CPU:
         self.registers = Registers()
         self.program_counter = Counter(4)
         self.memory_counter = Counter(4, self.memory_size//2)
+
 
     def load_memory_from(self, filename):
         self.memory.load_memory_from(filename)
@@ -33,6 +33,7 @@ class CPU:
             self.execute_parsed_instruction(parsed_instruction)
 
             break #placeholder, program counter behaviour yet to implement
+
 
     def execute_parsed_instruction(self, instruction: dict):
         return instruction
