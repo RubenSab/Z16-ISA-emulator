@@ -66,7 +66,14 @@ class Memory:
                 address = i//2
             )
 
-    # TODO: add dump_memory(filename), program counter and memory counter
 
     def __repr__(self):
-        return str([word.to_hex() for word in self.word_memory])
+        lines = []
+        for i in range(0, len(self.word_memory), 8):
+            # Address of the first word in the row, as hex
+            addr = f"{i:04X}"
+            # Slice 8 words for this row and convert each to hex string
+            row_words = self.word_memory[i:i+8]
+            row_str = " ".join(word.to_hex() for word in row_words)
+            lines.append(f"{addr}: {row_str}")
+        return "\n".join(lines)

@@ -17,8 +17,12 @@ class Emulator:
         self.cpu.load_memory_from(binary_filename)
         self.cpu.execute()
 
-        print(self.cpu.registers)
+        # Display result for debugging
+        self.display_state()
+
+    def display_state(self):
         print(self.cpu.memory)
-        print(self.cpu.memory.program_counter)
-        print(self.cpu.memory.memory_counter)
-        print(self.cpu.exit_code_string)
+        print(self.cpu.registers)
+        print('memory counter:', self.cpu.memory.memory_counter)
+        print('program counter:', self.cpu.memory.program_counter)
+        print('exit code:', self.cpu.exit_code_string)

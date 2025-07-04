@@ -191,10 +191,3 @@ class CPU:
     self, r1=None, r2=None, r3=None, immediate=None):
         if self.registers.read('X') == Word(0):
             self.memory.program_counter += immediate
-
-
-if __name__=='__main__':
-    cpu = CPU(64)
-    cpu.load_memory_from('bytes_test')
-    cpu.execute()
-    print(cpu.memory)
