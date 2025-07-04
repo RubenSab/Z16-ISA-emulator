@@ -43,7 +43,7 @@ class CPU:
             Word(int('A000', 16)): 'Custom exit code 0xA000',
         }
         self.exit_code = None
-
+        self.exit_code_string = None
 
     def load_memory_from(self, filename):
         self.memory.load_memory_from(filename)
@@ -55,18 +55,15 @@ class CPU:
             instruction = self.memory.load_word(
                 int(self.memory.program_counter)
             )
-            # Every "exit code" that is not a proper one indicates that
-            # the execution is still running, possibly useful for debugging.
-            self.exit_code = instruction
-            if self.exit_code in self.exit_codes:
-                print(f"0x{self.exit_code}: {self.exit_codes[self.exit_code]}")
+            if instruction in self.exit_codes:
+                self.exit_code = instruction
+                self.exit_code_string = f"0x{self.exit_code}: {self.exit_codes[self.exit_code]}"
                 break
 
             # --- Instruction decode ---
             parsed_instruction = deassemble_word(instruction)
 
             # --- Instruction execution ---
-            print(parsed_instruction)
             self.execute_parsed_instruction(parsed_instruction)
 
 
@@ -176,7 +173,7 @@ class CPU:
 
     def _store_word(self, r1=None, r2=None, r3=None, immediate=None):
         self.memory.store_word(
-            target = self.memory.memory_counter,
+            address = self.memory.memory_counter,
             content = self.registers.read(r2)
         )
         self.memory.program_counter += 1

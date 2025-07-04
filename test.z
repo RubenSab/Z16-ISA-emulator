@@ -1,3 +1,5 @@
 lw E, 0
 li A, 1
 add B, A, E
+amc O 10
+sw E 0

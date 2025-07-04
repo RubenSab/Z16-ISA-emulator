@@ -37,7 +37,7 @@ class Memory:
                 f"word location {address} doesn't exist "
                 f"inside {self.memory_byte_size//2} words long memory."
             )
-        self.word_memory[address] = content
+        self.word_memory[int(address)] = content
 
 
     def load_word(self, address) -> Word:
