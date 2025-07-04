@@ -10,7 +10,7 @@ class Emulator:
     def emulate(self, source_filename):
         # Assemble code
         self.assembler.assemble(source_filename)
-        binary_filename = source_filename.rstrip('.')+'.bin'
+        binary_filename = source_filename.split('.')[0]+'.bin'
         self.assembler.store_bytes(binary_filename)
 
         # Execute binary
