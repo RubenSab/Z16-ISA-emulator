@@ -1,4 +1,6 @@
+import math
 from word import Word
+from counter import Counter
 
 class MemoryOverflowError(Exception):
     pass
@@ -18,6 +20,14 @@ class Memory:
             )
         self.memory_byte_size = memory_byte_size
         self.word_memory = [Word(0)]*(self.memory_byte_size//2)
+        self.counter_byte_size = 1
+        # Initialize program counter to 0
+        self.program_counter = Counter(self.counter_byte_size, 0)
+        # initialize memory counter in the middle of memory space
+        self.memory_counter = Counter(
+            self.counter_byte_size,
+            self.counter_byte_size//2
+        )
 
 
     def store_word(self, address, content: Word):
@@ -36,7 +46,7 @@ class Memory:
                 f"word location {address} doesn't exist "
                 f"inside {self.memory_byte_size//2} words long memory."
             )
-        return self.word_memory[address]
+        return self.word_memory[int(address)]
 
 
     def load_memory_from(self, filename):

@@ -3,7 +3,6 @@ from registers import Registers
 from deassembler import deassemble_word
 from registers import REGISTER_NAMES
 from instructions import INSTRUCTIONS, INSTRUCTIONS_LIST
-from counter import Counter
 from word import Word
 
 class CPU:
@@ -30,8 +29,6 @@ class CPU:
         self.memory_size = memory_size
         self.memory = Memory(memory_size)
         self.registers = Registers()
-        self.program_counter = Counter(4)
-        self.memory_counter = Counter(4, self.memory_size//2)
         self.exit_codes = {
             Word(int('0000', 16)): 'No instructions left to execute.',
             Word(int('1000', 16)): 'Division by zero.',
@@ -55,7 +52,9 @@ class CPU:
     def execute(self):
         while True:
             # --- Instruction fetch ---
-            instruction = self.memory.load_word(int(self.program_counter))
+            instruction = self.memory.load_word(
+                int(self.memory.program_counter)
+            )
             # Every "exit code" that is not a proper one indicates that
             # the execution is still running, possibly useful for debugging.
             self.exit_code = instruction
@@ -67,137 +66,138 @@ class CPU:
             parsed_instruction = deassemble_word(instruction)
 
             # --- Instruction execution ---
+            print(parsed_instruction)
             self.execute_parsed_instruction(parsed_instruction)
 
 
     def execute_parsed_instruction(self, instruction: dict) -> None:
         # call instruction's corresponding function from dictionary
         self.INSTRUCTION_FUNCTIONS[instruction['instruction']](
-            target = instruction['target'],
-            op1 = instruction['first operand'],
-            op2 = instruction['second operand'],
+            r1 = instruction['first register'],
+            r2 = instruction['second register'],
+            r3 = instruction['third register'],
             immediate = instruction['immediate']
         )
 
 
-    def _bitwise_and(self, target=None, op1=None, op2=None, immediate=None):
+    def _bitwise_and(self, r1=None, r2=None, r3=None, immediate=None):
         self.registers.write(
-            target,
-            self.registers.read(op1) & self.registers.read(op2)
+            r1,
+            self.registers.read(r2) & self.registers.read(r3)
         )
-        self.program_counter.add(1)
+        self.memory.program_counter.add(1)
 
-    def _bitwise_or(self, target=None, op1=None, op2=None, immediate=None):
+    def _bitwise_or(self, r1=None, r2=None, r3=None, immediate=None):
         self.registers.write(
-            target,
-            self.registers.read(op1) | self.registers.read(op2)
+            r1,
+            self.registers.read(r2) | self.registers.read(r3)
         )
-        self.program_counter += 1
+        self.memory.program_counter += 1
 
-    def _bitwise_xor(self, target=None, op1=None, op2=None, immediate=None):
+    def _bitwise_xor(self, r1=None, r2=None, r3=None, immediate=None):
         self.registers.write(
-            target,
-            self.registers.read(op1) ^ self.registers.read(op2)
+            r1,
+            self.registers.read(r2) ^ self.registers.read(r3)
         )
-        self.program_counter += 1
+        self.memory.program_counter += 1
 
-    def _bitwise_not(self, target=None, op1=None, op2=None, immediate=None):
+    def _bitwise_not(self, r1=None, r2=None, r3=None, immediate=None):
         self.registers.write(
-            target,
-            ~self.registers.read(op1)
+            r1,
+            ~self.registers.read(r2)
         )
-        self.program_counter += 1
+        self.memory.program_counter += 1
 
-    def _shift(self, target=None, op1=None, op2=None, immediate=None):
-        to_shift = self.registers.read(op1)
-        amount = self.registers.read(op2)
+    def _shift(self, r1=None, r2=None, r3=None, immediate=None):
+        to_shift = self.registers.read(r2)
+        amount = self.registers.read(r3)
         if amount > 0:
             result = to_shift >> amount
         else:
             result = to_shift << -1*amount
-        self.registers.write(target, result)
-        self.program_counter += 1
+        self.registers.write(r1, result)
+        self.memory.program_counter += 1
 
-    def _add(self, target=None, op1=None, op2=None, immediate=None):
+    def _add(self, r1=None, r2=None, r3=None, immediate=None):
         self.registers.write(
-            target,
-            self.registers.read(op1) + self.registers.read(op2)
+            r1,
+            self.registers.read(r2) + self.registers.read(r3)
         )
-        self.program_counter += 1
+        self.memory.program_counter += 1
 
-    def _sub(self, target=None, op1=None, op2=None, immediate=None):
+    def _sub(self, r1=None, r2=None, r3=None, immediate=None):
         self.registers.write(
-            target,
-            self.registers.read(op1) - self.registers.read(op2)
+            r1,
+            self.registers.read(r2) - self.registers.read(r3)
         )
-        self.program_counter += 1
+        self.memory.program_counter += 1
 
-    def _mul(self, target=None, op1=None, op2=None, immediate=None):
+    def _mul(self, r1=None, r2=None, r3=None, immediate=None):
         self.registers.write(
-            target,
-            self.registers.read(op1) * self.registers.read(op2)
+            r1,
+            self.registers.read(r2) * self.registers.read(r3)
         )
-        self.program_counter += 1
+        self.memory.program_counter += 1
 
-    def _int_div(self, target=None, op1=None, op2=None, immediate=None):
+    def _int_div(self, r1=None, r2=None, r3=None, immediate=None):
         self.registers.write(
-            target,
-            self.registers.read(op1) // self.registers.read(op2)
+            r1,
+            self.registers.read(r2) // self.registers.read(r3)
         )
-        self.program_counter += 1
+        self.memory.program_counter += 1
 
-    def _compare(self, target=None, op1=None, op2=None, immediate=None):
-        a = self.registers.read(op1)
-        b = self.registers.read(op2)
+    def _compare(self, r1=None, r2=None, r3=None, immediate=None):
+        a = self.registers.read(r2)
+        b = self.registers.read(r3)
         if a > b:
             result = Word(int('10', 16))
         elif a < b:
             result = Word(int('1', 16))
         else:
             result = Word(int(0))
-        self.registers.write(target, result)
-        self.program_counter += 1
+        self.registers.write(r1, result)
+        self.memory.program_counter += 1
 
-    def _load_immediate(self, target=None, op1=None, op2=None, immediate=None):
-        self.registers.write(target, immediate)
-        self.program_counter += 1
+    def _load_immediate(self, r1=None, r2=None, r3=None, immediate=None):
+        self.registers.write(r2, immediate)
+        self.memory.program_counter += 1
 
     def _add_to_memory_counter(
-    self, target=None, op1=None, op2=None, immediate=None):
-        self.memory_counter += self.registers.read(op1) + immediate
-        self.program_counter += 1
+    self, r1=None, r2=None, r3=None, immediate=None):
+        self.memory.memory_counter += self.registers.read(r2) + immediate
+        self.memory.program_counter += 1
 
-    def _load_word(self, target=None, op1=None, op2=None, immediate=None):
+    def _load_word(self, r1=None, r2=None, r3=None, immediate=None):
         self.registers.write(
-            self.memory.load_word(self.memory_counter)
+            register_name = r2,
+            content = self.memory.load_word(self.memory.memory_counter)
         )
-        self.program_counter += 1
+        self.memory.program_counter += 1
 
-    def _store_word(self, target=None, op1=None, op2=None, immediate=None):
+    def _store_word(self, r1=None, r2=None, r3=None, immediate=None):
         self.memory.store_word(
-            self.memory_counter,
-            self.registers.read(op1)
+            target = self.memory.memory_counter,
+            content = self.registers.read(r2)
         )
-        self.program_counter += 1
+        self.memory.program_counter += 1
 
     def _custom_register_immediate_input_output(
-    self, target=None, op1=None, op2=None, immediate=None):
+    self, r1=None, r2=None, r3=None, immediate=None):
         # placeholder implementation
         if immediate == Word(0):
-            print(self.registers.read(op1))
+            print(self.registers.read(r2))
         elif immediate == Word(1):
-            self.registers.write(op1, input())
-        self.program_counter += 1
+            self.registers.write(r2, input())
+        self.memory.program_counter += 1
 
     def _add_to_program_counter_if_X_is_equal_to_zero(
-    self, target=None, op1=None, op2=None, immediate=None):
+    self, r1=None, r2=None, r3=None, immediate=None):
         if self.registers.read('X') == Word(0):
-            self.program_counter += immediate
+            self.memory.program_counter += immediate
 
 
 if __name__=='__main__':
     cpu = CPU(64)
     cpu.load_memory_from('bytes_test')
-    #cpu.memory.store_word(0, int('1000', 16))
     cpu.execute()
     print(cpu.memory)

@@ -9,11 +9,11 @@ if __name__=='__main__':
     assembler.store_bytes('bytes.bin')
 
     # Execute
-    cpu = CPU(64)
+    cpu = CPU(512)
     cpu.load_memory_from('bytes.bin')
     cpu.execute()
     print(cpu.registers)
     print(cpu.memory)
-    print(cpu.program_counter)
-    print(cpu.memory_counter)
+    print(cpu.memory.program_counter)
+    print(cpu.memory.memory_counter)
     print(cpu.exit_code)

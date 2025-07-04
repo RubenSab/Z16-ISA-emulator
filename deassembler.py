@@ -23,25 +23,26 @@ def deassemble_word(word: Word) -> dict:
         return {
             #"type": instruction_type,
             "instruction": instruction,
-            "target": REGISTER_NAMES[int(word[1], 16)],
-            "first operand": REGISTER_NAMES[int(word[2], 16)],
-            "second operand": REGISTER_NAMES[int(word[3], 16)],
+            "first register": REGISTER_NAMES[int(word[1], 16)],
+            "second register": REGISTER_NAMES[int(word[2], 16)],
+            "third register": REGISTER_NAMES[int(word[3], 16)],
             "immediate": None
         }
     elif instruction_type == 'RI':
         return {
             #"type": instruction_type,
             "instruction": instruction,
-            "target": REGISTER_NAMES[int(word[1], 16)],
-            "first operand": None,
-            "second operand": None,
+            "first register": None,
+            "second register": REGISTER_NAMES[int(word[1], 16)],
+            "third register": None,
             "immediate": int(Word(int(word[2:], 16), bit_width=8))
         }
     elif instruction_type == 'I':
         return {
             #"type": instruction_type,
+            "first register": None,
             "instruction": instruction,
-            "first operand": None,
-            "second operand": None,
+            "second register": None,
+            "third register": None,
             "immediate": int(Word(int(word[2:], 16), bit_width=12)),
         }

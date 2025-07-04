@@ -17,7 +17,8 @@ class Assembler:
     def assemble(self, filename) -> bytes:
         with open(filename, 'r') as f:
             parsed_lines = [
-                line.split('#')[0].strip().replace(',','').split()
+                line.split('#')[0].strip()
+                .replace(',','').replace('(','').replace(')','').split()
                 for line in f.readlines()
                 if line.split('#')[0].strip().split()
             ]
