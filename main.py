@@ -1,14 +1,19 @@
 from assembler import Assembler
-from memory import Memory
-from registers import Registers
-from deassembler import Deassembler
+from cpu import CPU
 
 if __name__=='__main__':
-    assembler = Assembler()
-    assembler.assemble('test')
-    assembler.store_bytes('bytes_test')
-    m = Memory(64)
-    m.load_file('bytes_test')
-    d = Deassembler()
-    print(d.deassemble('bytes_test'))
 
+    # Assemble code
+    assembler = Assembler()
+    assembler.assemble('test.z')
+    assembler.store_bytes('bytes.bin')
+
+    # Execute
+    cpu = CPU(64)
+    cpu.load_memory_from('bytes.bin')
+    cpu.execute()
+    print(cpu.registers)
+    print(cpu.memory)
+    print(cpu.program_counter)
+    print(cpu.memory_counter)
+    print(cpu.exit_code)

@@ -1,0 +1,3 @@
+li B, 3
+li D, 4
+sub A, B, D

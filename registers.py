@@ -8,15 +8,15 @@ class RegisterNameError(Exception):
 class Registers:
 
     def __init__(self):
-        self.registers = dict.fromkeys(REGISTER_NAMES, 0)
+        self.registers = dict.fromkeys(REGISTER_NAMES, Word(0))
 
-    def read_word(self, register_name):
+    def read(self, register_name):
         if register_name == 'O':
             return 0
         self.validate_register_name(register_name)        
         return self.registers[register_name]
 
-    def write_word(self, register_name, content: Word):
+    def write(self, register_name, content: Word):
         content = Word(content)
         if register_name == 'O':
             pass

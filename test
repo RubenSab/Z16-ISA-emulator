@@ -1,6 +1,0 @@
-sub X, A D
-# comment
-li C -3 # comment
-apeq -125
-add B D E
-sub O H A

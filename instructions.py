@@ -10,11 +10,11 @@ INSTRUCTIONS = {
     "div": 'R',
     "comp": 'R',
     "li": "RI",
-    "apeq": "I",
     "amc": "RI",
     "lw": "RI",
     "sw": "RI",
     "criio": "RI",
+    "apceq": "I",
 }
 
 INSTRUCTIONS_LIST = list(INSTRUCTIONS.keys())
