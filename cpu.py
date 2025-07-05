@@ -62,7 +62,6 @@ class CPU:
 
             # --- Instruction decode ---
             parsed_instruction = deassemble_word(instruction)
-            print(parsed_instruction)
             # --- Instruction execution ---
             self.execute_parsed_instruction(parsed_instruction)
 
