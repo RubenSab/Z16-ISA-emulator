@@ -18,7 +18,7 @@ class Assembler:
         with open(filename, 'r') as f:
             parsed_lines = [
                 line.split('#')[0].strip()
-                .replace(',','').replace('(','').replace(')','').split()
+                .replace(',',' ').replace('+',' ').split()
                 for line in f.readlines()
                 if line.split('#')[0].strip().split()
             ]
@@ -76,7 +76,7 @@ class Assembler:
 
 
     def _hex_index(self, List, element):
-        return str(hex(List.index(element))[2:])
+        return str(hex(List.index(element)))[2:]
 
 
     def store_bytes(self, filename):

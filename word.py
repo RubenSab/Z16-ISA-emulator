@@ -47,5 +47,9 @@ class Word(int):
         value = int.from_bytes(byte_data, byteorder=byteorder, signed=signed)
         return cls(value, bit_width)
 
+    def to_bytes(self, byteorder='big', signed=False):
+        byte_length = self._bit_width // 8
+        return int(self if signed else (int(self) & self._bit_mask)).to_bytes(byte_length, byteorder=byteorder, signed=signed)
+
     def __str__(self):
         return self.to_hex()

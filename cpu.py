@@ -21,8 +21,8 @@ class CPU:
             "comp": self._compare,
             "li": self._load_immediate,
             "amc": self._add_to_memory_counter,
-            "lw": self._load_word,
-            "sw": self._store_word,
+            "lwmc": self._load_word,
+            "swmc": self._store_word,
             "criio": self._custom_register_immediate_input_output,
             "apceq": self._add_to_program_counter_if_X_is_equal_to_zero,
         }
@@ -62,7 +62,7 @@ class CPU:
 
             # --- Instruction decode ---
             parsed_instruction = deassemble_word(instruction)
-
+            print(parsed_instruction)
             # --- Instruction execution ---
             self.execute_parsed_instruction(parsed_instruction)
 
@@ -82,7 +82,7 @@ class CPU:
             r1,
             self.registers.read(r2) & self.registers.read(r3)
         )
-        self.memory.program_counter.add(1)
+        self.memory.program_counter += 1
 
     def _bitwise_or(self, r1=None, r2=None, r3=None, immediate=None):
         self.registers.write(
@@ -167,13 +167,15 @@ class CPU:
     def _load_word(self, r1=None, r2=None, r3=None, immediate=None):
         self.registers.write(
             register_name = r2,
-            content = self.memory.load_word(self.memory.memory_counter)
+            content = self.memory.load_word(
+                self.memory.memory_counter+immediate
+            )
         )
         self.memory.program_counter += 1
 
     def _store_word(self, r1=None, r2=None, r3=None, immediate=None):
         self.memory.store_word(
-            address = self.memory.memory_counter,
+            address = self.memory.memory_counter + immediate,
             content = self.registers.read(r2)
         )
         self.memory.program_counter += 1

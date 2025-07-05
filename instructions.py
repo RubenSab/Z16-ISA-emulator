@@ -11,8 +11,8 @@ INSTRUCTIONS = {
     "comp": 'R',
     "li": "RI",
     "amc": "RI",
-    "lw": "RI",
-    "sw": "RI",
+    "lwmc": "RI",
+    "swmc": "RI",
     "criio": "RI",
     "apceq": "I",
 }

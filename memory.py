@@ -13,26 +13,27 @@ class InvalidMemorySize(Exception):
 
 class Memory:
     def __init__(self, memory_byte_size):
-        if memory_byte_size%2==1 or memory_byte_size<=0 \
-        or not isinstance(memory_byte_size, int):
+        # Initialize memory size
+        self.memory_word_size = memory_byte_size//2
+        if self.memory_word_size<=0 or \
+        not isinstance(self.memory_word_size, int):
             raise InvalidMemorySize(
-                f"{memory_byte_size} is not a valid memory size."
+                f"{memory_word_size} is not a valid memory size."
             )
-        self.memory_byte_size = memory_byte_size
-        self.word_memory = [Word(0)]*(self.memory_byte_size//2)
-        self.counter_byte_size = 1
+        # Initialize memory array
+        self.word_memory = [Word(0)]*(self.memory_word_size)
         # Initialize program counter to 0
-        self.program_counter = Counter(self.counter_byte_size, 0)
-        # initialize memory counter in the middle of memory space
+        self.program_counter = Counter(self.memory_word_size, 0)
+        # initialize memory counter at the middle of memory space
         self.memory_counter = Counter(
-            self.counter_byte_size,
-            self.counter_byte_size//2
+            self.memory_word_size,
+            self.memory_word_size//2
         )
 
 
     def store_word(self, address, content: Word):
         content = Word(content)
-        if address >= self.memory_byte_size//2:
+        if address >= self.memory_word_size:
             raise MemoryIndexError(
                 f"word location {address} doesn't exist "
                 f"inside {self.memory_byte_size//2} words long memory."
@@ -41,10 +42,10 @@ class Memory:
 
 
     def load_word(self, address) -> Word:
-        if address >= self.memory_byte_size//2:
+        if address >= self.memory_word_size:
             raise MemoryIndexError(
                 f"word location {address} doesn't exist "
-                f"inside {self.memory_byte_size//2} words long memory."
+                f"inside {self.memory_word_size} words long memory."
             )
         return self.word_memory[int(address)]
 
@@ -53,10 +54,10 @@ class Memory:
         with open(filename, "rb") as f:
             byte_sequence = f.read()
 
-        if len(byte_sequence) > self.memory_byte_size:
+        if len(byte_sequence) > self.memory_word_size*2:
             raise MemoryOverflowError(
                 f"Bytecode of length {len(byte_sequence)} doesn't fit "
-                f"inside {self.memory_byte_size//2} words long memory."
+                f"inside {self.memory_word_size} words long memory."
             )
 
         # load two bytes (so one word) per memory location
@@ -66,6 +67,10 @@ class Memory:
                 address = i//2
             )
 
+    def dump_memory_to(self, filename):
+        with open(filename, "wb") as f:
+            for word in self.word_memory:
+                f.write(word.to_bytes())
 
     def __repr__(self):
         lines = []

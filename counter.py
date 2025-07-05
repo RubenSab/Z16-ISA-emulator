@@ -1,7 +1,11 @@
 class Counter:
-    def __init__(self, byte_size, value=0):
-        self.max_value = 2**(byte_size*8)
+    def __init__(self, max_address, value=0):
+        self.max_value = max_address
         self.value = value % self.max_value  # ensure initial value is wrapped
+
+    def __add__(self, offset):
+        new_value = (self.value + offset) % self.max_value
+        return Counter(self.max_value, new_value)
 
     def __iadd__(self, offset):
         self.value = (self.value + offset) % self.max_value
