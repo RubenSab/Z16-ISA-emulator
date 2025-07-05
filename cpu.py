@@ -167,7 +167,7 @@ class CPU:
         self.registers.write(
             register_name = r2,
             content = self.memory.load_word(
-                self.memory.memory_counter+immediate
+                self.memory.memory_counter + immediate
             )
         )
         self.memory.program_counter += 1
