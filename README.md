@@ -71,7 +71,7 @@ Instructions have only 3 possible formats, in which fields are evenly divided in
 5. `add` (addition)
 6. `sub` (subtraction)
 7. `mul` (multiplication)
-8. `div` (division)
+8. `div` (integer division)
 9. `comp`, sets r1 to:
 	- `10` if r2>r3,
 	- `1` if r2<r3,
@@ -83,7 +83,7 @@ Instructions have only 3 possible formats, in which fields are evenly divided in
 11. `amc` (add r1 + immediate field to memory counter)
 12. `lwmc` (load word to r1 from address = memory counter + immediate)
 13. `swmc` (store word in r1 to address = memory counter + immediate)
-14. `criio` (*Custom Register Immediate Input Output*: inputs to or outputs the content of r1 according to the mode expressed in the immediate field. It's behaviour depends on the custom architecture implementation.)
+14. `criio` (*Custom Register Immediate Input Output*: inputs to or outputs the content of r1 according to the mode expressed in the immediate field. Its behaviour depends on the custom architecture implementation.)
 
 #### I type
 
@@ -97,12 +97,12 @@ Syntax follows these core rules:
 - Instruction names are written in *lowercase*.
 - Register names are written in *uppercase*.
 - No immediate or register is implicit.
-- There can be lines empty lines.
+- There can be empty lines.
 - Comments can be written starting with an `#` both after instructions and in empty lines.
 
 Also, the following conventions are encouraged:
 
-- If the instruction immediate field **is greater than zero** and **is added to a counter** (`amc`, `lwmc`, `swmc`, `apceq`), then it's prefixed by a **plus sign**.
+- If the instruction immediate field **is greater or equal to zero** and **is added to a counter** (`amc`, `lwmc`, `swmc`, `apceq`), then it's prefixed by a **plus sign**.
 - In every other case, operands should be separated by a comma and a space.
 - Assembly files are in `.zed` format.
 
