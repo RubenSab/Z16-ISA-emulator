@@ -1,7 +1,3 @@
-# Zedecim ISA
-
-Zedecim is an Instruction Set (emulated) Architecture which has sixteen instructions (Sedecim in latin) and it can only work with signed 16 bit integers (Z in the name stands for the set of integer numbers).
-
 # Usage
 
 Launch `main.py` from the command line or do the following:
@@ -14,9 +10,9 @@ Launch `main.py` from the command line or do the following:
 from emulator import Emulator
 
 emulator = Emulator(128)
-emulator.emulate_code('example/test.zed', 'example/memory.bin')
+emulator.execute_code('example/test.zed', 'example/memory.bin')
 # Or if you already have the binary file ready:
-# emulator.emulate_bin('example/test.bin')
+# emulator.execute_bin('example/test.bin')
 ```
 
 # Emulator structure
@@ -44,7 +40,7 @@ Zedecim has:
 
 ### Formats
 
-Instructions have only 3 possible formats, in which fields are evenly divided in nibbles (4 bits). The same order and type of operands holds for **Zedecim's Assembly**:
+Instructions have only 2 possible formats, in which fields are evenly divided in nibbles (4 bits). The same order and type of operands holds for **Zedecim's Assembly**:
 - **R** (Register type):
 	- 1 nibble for the instruction code,
 	- 1 nibble for the target register,
@@ -52,16 +48,13 @@ Instructions have only 3 possible formats, in which fields are evenly divided in
 	- 1 nibble for the second operand's register
 - **RI** (Register immediate type):
 	- 1 nibble for the instruction code,
-	- 1 nibble for the first register (either target or first operand's),
+	- 1 nibble for the first register (either target or first operand's register),
 	- 2 nibbles for the signed immediate field (-128 to 127)
-- **I** (Immediate type):
-	- 1 nibble for the instruction code,
-	- 3 nibbles for the signed immediate field (-2048 to 2047) 
 
 ### Instruction list
 
 *Labelled by their code, registers are named r1, r2, r3*
-#### R type
+#### R type: *two registers* as *input* and output in a register
 
 0. `and` (bitwise and)
 1. `or` (bitwise or)
@@ -71,23 +64,37 @@ Instructions have only 3 possible formats, in which fields are evenly divided in
 5. `add` (addition)
 6. `sub` (subtraction)
 7. `mul` (multiplication)
-8. `div` (integer division)
+8. `div` (division)
 9. `comp`, sets r1 to:
 	- `10` if r2>r3,
 	- `1` if r2<r3,
 	- `0` if r2=r3.
 
-#### RI type
+#### RI type: a *register* and an *immediate* as *input* and output either in a register, a memory location, the memory counter, the program counter or a peripheral
 
-10. `li` (load immediate to r1)
-11. `amc` (add r1 + immediate field to memory counter)
-12. `lwmc` (load word to r1 from address = memory counter + immediate)
-13. `swmc` (store word in r1 to address = memory counter + immediate)
-14. `criio` (*Custom Register Immediate Input Output*: inputs to or outputs the content of r1 according to the mode expressed in the immediate field. Its behaviour depends on the custom architecture implementation.)
+10. `li` (loads immediate to register)
+11. `amc` (adds register + immediate to memory counter)
+12. `lwmc` (loads word to register from address = memory counter + immediate)
+13. `swmc` (stores word in register to address = memory counter + immediate)
+14. `criio` (*Custom Register Immediate Input Output*: inputs to or outputs the register content according to the mode expressed in the immediate field. Its behaviour depends on the custom architecture implementation.)
+15. `apceq` (adds register + immediate to program counter if the register **X** is equal to 0)
 
-#### I type
+### Special exit code instructions
 
-15. apceq (add the immediate offset to program counter if the register **X** is equal to 0)
+Some **reserved R-type instructions**, otherwise useless, can trigger and **exit code** and halt the execution:
+
+```
+and O, O, O -> triggers exit code 0x0000: No instructions left to execute.
+or O, O, O -> triggers exit code 0x1000: Division by zero.
+xor O, O, O -> triggers exit code 0x2000: Custom I/O exit code 0x2000.
+not O, O, O -> triggers exit code 0x3000: Custom I/O exit code 0x3000.
+sh O, O, O -> triggers exit code 0x4000: Custom I/O exit code 0x4000.
+add O, O, O -> triggers exit code 0x5000: Custom I/O exit code 0x5000.
+sub O, O, O -> triggers exit code 0x6000: Custom I/O exit code 0x6000.
+mul O, O, O -> triggers exit code 0x7000: Custom I/O exit code 0x7000.
+div O, O, O -> triggers exit code 0x8000: Custom I/O exit code 0x8000.
+comp O, O, O -> triggers exit code 0x9000: Custom I/O exit code 0x9000.
+```
 
 # Zedecim Assembly syntax
 
@@ -102,8 +109,7 @@ Syntax follows these core rules:
 
 Also, the following conventions are encouraged:
 
-- If the instruction immediate field **is greater or equal to zero** and **is added to a counter** (`amc`, `lwmc`, `swmc`, `apceq`), then it's prefixed by a **plus sign**.
-- In every other case, operands should be separated by a comma and a space.
+- If the immediate fields of `lwmc`, `swmc` are greater or equal to zero, they should prefixed by a **plus sign** to represent being offsets of the memory counter.
 - Assembly files are in `.zed` format.
 
 Example of semantically correct instructions:
@@ -117,5 +123,5 @@ li D, 8
 swmc D, +0
 
 # I type
-apceq -2571
+apceq O, -25
 ```

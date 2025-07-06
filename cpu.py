@@ -32,18 +32,17 @@ class CPU:
         self.exit_codes = {
             Word(int('0000', 16)): 'No instructions left to execute.',
             Word(int('1000', 16)): 'Division by zero.',
-            Word(int('2000', 16)): 'Memory overflow error.',
-            Word(int('3000', 16)): 'Invalid memory address.',
-            Word(int('4000', 16)): 'Custom exit code 0x4000',
-            Word(int('5000', 16)): 'Custom exit code 0x5000',
-            Word(int('6000', 16)): 'Custom exit code 0x6000',
-            Word(int('7000', 16)): 'Custom exit code 0x7000',
-            Word(int('8000', 16)): 'Custom exit code 0x8000',
-            Word(int('9000', 16)): 'Custom exit code 0x9000',
-            Word(int('A000', 16)): 'Custom exit code 0xA000',
+            Word(int('2000', 16)): 'Custom I/O exit code 0x2000.',
+            Word(int('3000', 16)): 'Custom I/O exit code 0x3000.',
+            Word(int('4000', 16)): 'Custom I/O exit code 0x4000.',
+            Word(int('5000', 16)): 'Custom I/O exit code 0x5000.',
+            Word(int('6000', 16)): 'Custom I/O exit code 0x6000.',
+            Word(int('7000', 16)): 'Custom I/O exit code 0x7000.',
+            Word(int('8000', 16)): 'Custom I/O exit code 0x8000.',
+            Word(int('9000', 16)): 'Custom I/O exit code 0x9000.',
         }
         self.exit_code = None
-        self.exit_code_string = None
+
 
     def load_memory_from(self, filename):
         self.memory.load_memory_from(filename)
@@ -57,13 +56,23 @@ class CPU:
             )
             if instruction in self.exit_codes:
                 self.exit_code = instruction
-                self.exit_code_string = f"0x{self.exit_code}: {self.exit_codes[self.exit_code]}"
-                break
+                self.halt_and_display()
 
             # --- Instruction decode ---
             parsed_instruction = deassemble_word(instruction)
             # --- Instruction execution ---
             self.execute_parsed_instruction(parsed_instruction)
+            if self.exit_code:
+                self.halt_and_display()
+
+
+    def halt_and_display(self):
+        print(f"0x{self.exit_code}: {self.exit_codes[self.exit_code]}")
+        print(self.memory)
+        print(self.registers)
+        print(f"memory counter: 0x{self.memory.memory_counter}")
+        print(f"program counter: 0x{self.memory.program_counter}")
+        quit()
 
 
     def execute_parsed_instruction(self, instruction: dict) -> None:
@@ -136,10 +145,12 @@ class CPU:
         self.memory.program_counter += 1
 
     def _int_div(self, r1=None, r2=None, r3=None, immediate=None):
-        self.registers.write(
-            r1,
-            self.registers.read(r2) // self.registers.read(r3)
-        )
+        a = self.registers.read(r2)
+        b = self.registers.read(r3)
+        if b == Word(0):
+            self.exit_code = Word(int('1000', 16)) # Division by zero
+            return
+        self.registers.write(r1, a // b)
         self.memory.program_counter += 1
 
     def _compare(self, r1=None, r2=None, r3=None, immediate=None):
@@ -185,10 +196,10 @@ class CPU:
         if immediate == Word(0):
             print(self.registers.read(r2))
         elif immediate == Word(1):
-            self.registers.write(r2, input())
+            self.registers.write(r2, Word(ord(input())))
         self.memory.program_counter += 1
 
     def _add_to_program_counter_if_X_is_equal_to_zero(
     self, r1=None, r2=None, r3=None, immediate=None):
         if self.registers.read('X') == Word(0):
-            self.memory.program_counter += immediate
+            self.memory.program_counter += immediate + self.registers.read(r2)

@@ -37,12 +37,3 @@ def deassemble_word(word: Word) -> dict:
             "third register": None,
             "immediate": int(Word(int(word[2:], 16), bit_width=8))
         }
-    elif instruction_type == 'I':
-        return {
-            #"type": instruction_type,
-            "first register": None,
-            "instruction": instruction,
-            "second register": None,
-            "third register": None,
-            "immediate": int(Word(int(word[2:], 16), bit_width=12)),
-        }

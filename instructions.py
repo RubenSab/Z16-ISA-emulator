@@ -14,7 +14,7 @@ INSTRUCTIONS = {
     "lwmc": "RI",
     "swmc": "RI",
     "criio": "RI",
-    "apceq": "I",
+    "apceq": "RI",
 }
 
 INSTRUCTIONS_LIST = list(INSTRUCTIONS.keys())

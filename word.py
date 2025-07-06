@@ -35,9 +35,6 @@ class Word(int):
     def __rmul__(self, other):
         return self.__mul__(other)
 
-    def to_hex(self):
-        return f"{(int(self) & self._bit_mask):0{self._bit_width // 4}X}"
-
     @classmethod
     def from_bytes(cls, byte_data: bytes, byteorder='big', signed=False, bit_width=None):
         if not isinstance(byte_data, bytes):
@@ -51,5 +48,14 @@ class Word(int):
         byte_length = self._bit_width // 8
         return int(self if signed else (int(self) & self._bit_mask)).to_bytes(byte_length, byteorder=byteorder, signed=signed)
 
+    def to_hex(self):
+        return f"{(int(self) & self._bit_mask):0{self._bit_width // 4}X}"
+
+
     def __str__(self):
+        print('called', self._bit_width)
         return self.to_hex()
+
+
+
+
