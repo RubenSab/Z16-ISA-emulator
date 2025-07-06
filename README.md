@@ -1,6 +1,9 @@
+
+Zedecim is an Instruction Set (emulated) Architecture which has sixteen instructions (Sedecim in latin) and it can only work with signed 16 bit integers (Z in the name stands for the set of integer numbers).
+
 # Usage
 
-Launch `main.py` from the command line or do the following:
+Launch `emulator.py` from the command line (`"python emulator.py <memory_byte_size> <filename> [print_base]"`) or do the following:
 
 1. Import `emulator` (emulator.py) from `Emulator`.
 2. Initialize the emulator with the desired memory size in bytes.
@@ -9,8 +12,12 @@ Launch `main.py` from the command line or do the following:
 ``` python
 from emulator import Emulator
 
-emulator = Emulator(128)
-emulator.execute_code('example/test.zed', 'example/memory.bin')
+emulator = Emulator(
+	memory_byte_size = 64,
+	print_base = 16 # used for printing the CPU state at the end
+)
+emulator.execute_code('example/zero.zed')
+
 # Or if you already have the binary file ready:
 # emulator.execute_bin('example/test.bin')
 ```

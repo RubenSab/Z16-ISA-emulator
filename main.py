@@ -6,4 +6,4 @@ if __name__=='__main__':
         memory_byte_size = 64,
         print_base = 16 # used for printing the CPU state at the end
     )
-    emulator.execute_code('example/zero.zed')
+    emulator.execute_code('examples/zero.zed')
