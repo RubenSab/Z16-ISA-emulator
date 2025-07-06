@@ -1,0 +1,8 @@
+li A 1
+li C 10
+
+comp X, B, C
+apceq O, 3
+criio X, 0
+
+# python emulator.py 64 examples/count.zed

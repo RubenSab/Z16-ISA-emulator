@@ -61,6 +61,7 @@ class CPU:
 
             # --- Instruction decode ---
             parsed_instruction = deassemble_word(instruction)
+            print(parsed_instruction)
             # --- Instruction execution ---
             self.execute_parsed_instruction(parsed_instruction)
             if self.exit_code:
@@ -214,3 +215,5 @@ class CPU:
     self, r1=None, r2=None, r3=None, immediate=None):
         if self.registers.read('X') == Word(0):
             self.memory.program_counter += immediate + self.registers.read(r2)
+        else:
+            self.memory.program_counter += 1
