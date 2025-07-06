@@ -1,0 +1,27 @@
+# This program prints its own bytecode.
+
+# As it is, this program works with 64 bytes memory size,
+# however it can work with any memory size if you modify the first instruction.
+
+amc O, -16      # decrement memory counter to memory byte size/4 to reach 0x0000
+
+# The idea is to go at the first memory address, when the first instruction is memorized,
+# then a loop prints the current memory location addressed by memory counter and increases
+# it by one at each iteration, until every instruction is printed.
+
+li A, 1         # load constant 1 to A
+li C, 11        # load constant 11 to C because this program has 11 instructions
+
+# loop
+
+comp X, B, C   # X=0 if B==C
+apceq O, 7     # if X==0 jump to loop end, so 7 instructions (not lines) down
+
+lwmc D, +0     # write memory[MC + 0] to D
+criio D, 1     # print D in hex format
+
+amc O, 1       # increment memory counter by 1
+add B, B, A    # increment B by 1
+
+li X, 0        # reset X to 0 to jump unconditionally
+apceq O, -7    # jump to loop start, so 7 instructions (not lines) up

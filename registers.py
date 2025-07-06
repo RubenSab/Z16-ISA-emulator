@@ -19,7 +19,7 @@ class Registers:
     def write(self, register_name, content: Word):
         content = Word(content)
         if register_name == 'O':
-            pass
+            return
         self.validate_register_name(register_name)
         self.registers[register_name] = content
 

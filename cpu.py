@@ -61,7 +61,7 @@ class CPU:
 
             # --- Instruction decode ---
             parsed_instruction = deassemble_word(instruction)
-            print(parsed_instruction)
+
             # --- Instruction execution ---
             self.execute_parsed_instruction(parsed_instruction)
             if self.exit_code:
@@ -169,7 +169,7 @@ class CPU:
         a = self.registers.read(r2)
         b = self.registers.read(r3)
         if a > b:
-            result = Word(int('10', 16))
+            result = Word(int('2', 16))
         elif a < b:
             result = Word(int('1', 16))
         else:
@@ -206,14 +206,19 @@ class CPU:
     self, r1=None, r2=None, r3=None, immediate=None):
         # placeholder implementation
         if immediate == Word(0):
-            print(self.registers.read(r2))
+            print(self.registers.read(r2).str_by_base(10))
         elif immediate == Word(1):
+            print(self.registers.read(r2).str_by_base(16))
+        elif immediate == Word(2):
+            print('To be done')
+        elif immediate == Word(3):
             self.registers.write(r2, Word(ord(input())))
+            
         self.memory.program_counter += 1
 
     def _add_to_program_counter_if_X_is_equal_to_zero(
     self, r1=None, r2=None, r3=None, immediate=None):
-        if self.registers.read('X') == Word(0):
+        if self.registers.read('X') == 0:
             self.memory.program_counter += immediate + self.registers.read(r2)
         else:
             self.memory.program_counter += 1
