@@ -2,7 +2,7 @@ from word import Word
 
 class Counter:
     def __init__(self, max_address, value=0):
-        self.bit_width = max_address.bit_length()-1
+        self.bit_width = max_address.bit_length()
         self.max_value = max_address
         self.value = Word(value, self.bit_width)
 
@@ -38,3 +38,6 @@ class Counter:
 
     def __ne__(self, other):
         return self.value != (other.value if isinstance(other, Counter) else other)
+
+    def str_by_base(self, base):
+        return self.value.str_by_base(base)

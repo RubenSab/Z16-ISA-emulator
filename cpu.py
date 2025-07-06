@@ -7,7 +7,7 @@ from word import Word
 
 class CPU:
 
-    def __init__(self, memory_size):
+    def __init__(self, memory_size, print_base = 16):
         self.INSTRUCTION_FUNCTIONS = {
             "and": self._bitwise_and,
             "or": self._bitwise_or,
@@ -28,6 +28,7 @@ class CPU:
         }
         self.memory_size = memory_size
         self.memory = Memory(memory_size)
+        self.print_base = print_base
         self.registers = Registers()
         self.exit_codes = {
             Word(int('0000', 16)): 'No instructions left to execute.',
@@ -56,22 +57,32 @@ class CPU:
             )
             if instruction in self.exit_codes:
                 self.exit_code = instruction
-                self.halt_and_display()
+                self.halt_and_display(self.print_base)
 
             # --- Instruction decode ---
             parsed_instruction = deassemble_word(instruction)
             # --- Instruction execution ---
             self.execute_parsed_instruction(parsed_instruction)
             if self.exit_code:
-                self.halt_and_display()
+                self.halt_and_display(self.print_base)
 
 
-    def halt_and_display(self):
-        print(f"0x{self.exit_code}: {self.exit_codes[self.exit_code]}")
-        print(self.memory)
-        print(self.registers)
-        print(f"memory counter: 0x{self.memory.memory_counter}")
-        print(f"program counter: 0x{self.memory.program_counter}")
+    def halt_and_display(self, base=None):
+        if not base:
+            base = 16
+        print(
+            f"exit code {self.exit_code.str_by_base(base)}: "
+            f"{self.exit_codes[self.exit_code]}"
+        )
+        print(self.memory.str_by_base(base))
+        print(self.registers.str_by_base(base))
+        print(
+            f"memory counter: "
+            f"{self.memory.memory_counter.str_by_base(base)}"
+        )
+        print(
+            f"program counter: "
+            f"{self.memory.program_counter.str_by_base(base)}")
         quit()
 
 

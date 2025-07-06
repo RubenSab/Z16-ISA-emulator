@@ -2,5 +2,8 @@ from emulator import Emulator
 
 if __name__=='__main__':
 
-    emulator = Emulator(128)
+    emulator = Emulator(
+        memory_byte_size = 64,
+        print_base = 16 # used for printing the CPU state at the end
+    )
     emulator.execute_code('example/zero.zed')

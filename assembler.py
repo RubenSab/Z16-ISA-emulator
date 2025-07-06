@@ -30,7 +30,6 @@ class Assembler:
             instruction_type = INSTRUCTIONS[instruction]
             hex_string = self._translate_instruction(instruction) + \
             self._translate_operands(operands, instruction_type)
-
             words.append(bytes.fromhex(hex_string))
 
         byte_code = b''.join(words)

@@ -72,13 +72,27 @@ class Memory:
             for word in self.word_memory:
                 f.write(word.to_bytes())
 
-    def __repr__(self):
+    def str_by_base(self, base=16):
+        if base not in (10, 16):
+            raise ValueError("Base must be 10 or 16")
         lines = []
         for i in range(0, len(self.word_memory), 8):
-            # Address of the first word in the row, as hex
-            addr = f"{i:04X}"
-            # Slice 8 words for this row and convert each to hex string
-            row_words = self.word_memory[i:i+8]
-            row_str = " ".join(word.to_hex() for word in row_words)
+            # Format address based on base
+            addr = f"{i:04X}" if base == 16 else f"{i:04}"
+            # Format words based on base
+            if base == 16:
+                row_str = " ".join(
+                    word.to_hex()
+                    for word in self.word_memory[i:i+8]
+                )
+            else:  # base == 10
+                row_str = " ".join(
+                    f"{int(word):>6}"
+                    for word in self.word_memory[i:i+8]
+                )
             lines.append(f"{addr}: {row_str}")
         return "\n".join(lines)
+
+
+    def __repr__(self):
+        return self.str_by_base(16)
