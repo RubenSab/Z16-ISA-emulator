@@ -1,0 +1,27 @@
+# This program prints the first 20 Fibonacci numbers.
+# Requires at least 32 bytes of memory.
+# Launch it with: python emulator.py 32 examples/fibonacci.zed
+
+li A, 0         # A = 0 (first Fibonacci number)
+li B, 1         # B = 1 (second Fibonacci number)
+li C, 20        # C = 20 (counter limit)
+li D, 0         # D = loop counter
+li F, 1         # F = 1 constant
+
+# loop
+
+comp X, D, C    # if D == 10, X = 0
+apceq O, 8      # if X == 0, jump to end
+
+criio A, 0      # print current Fibonacci number (A) in decimal format
+
+add E, A, B     # E = A + B (next Fibonacci number)
+add A, B, O     # A = B
+add B, E, O     # B = E
+
+add D, D, F     # increment loop counter
+li X, 0         # reset X for unconditional jump
+apceq O, -8     # jump back to loop start
+
+# exit
+and O, O, O     # exit with code 0 (optional)
