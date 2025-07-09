@@ -61,7 +61,7 @@ class CPU:
             )
             if instruction in self.exit_codes:
                 self.exit_code = instruction
-                self.halt_and_display(self.print_base)
+                break
 
             # --- Instruction decode ---
             parsed_instruction = deassemble_word(instruction)
@@ -69,14 +69,12 @@ class CPU:
             # --- Instruction execution ---
             self.execute_parsed_instruction(parsed_instruction)
             if self.exit_code:
-                self.halt_and_display(self.print_base)
+                break
 
 
-    def halt_and_display(self, base=None):
-        if not base:
-            base = 16
+    def display_state(self, base=16):
         print(
-            f"exit code {self.exit_code.str_by_base(base)}: "
+            f"\nexit code {self.exit_code.str_by_base(base)}: "
             f"{self.exit_codes[self.exit_code]}"
         )
         print(self.memory.str_by_base(base))
@@ -87,8 +85,7 @@ class CPU:
         )
         print(
             f"program counter: "
-            f"{self.memory.program_counter.str_by_base(base)}")
-        quit()
+            f"{self.memory.program_counter.str_by_base(base)}\n")
 
 
     def execute_parsed_instruction(self, instruction: dict) -> None:
