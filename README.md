@@ -16,10 +16,10 @@ emulator = Emulator(
 	memory_byte_size = 64,
 	print_base = 16 # used for printing the CPU state at the end
 )
-emulator.execute_code('example/zero.zed')
+emulator.execute_code('example/zero.zed', display_state=True)
 
 # Or if you already have the binary file ready:
-# emulator.execute_bin('example/test.bin')
+# emulator.execute_bin('example/test.bin', display_state=True)
 ```
 
 # Emulator structure
@@ -28,10 +28,11 @@ emulator.execute_code('example/zero.zed')
 - **assembler.py** that translates assembly language to binary data;
 - **deassembler.py** that decodes binary data into instructions
 - **cpu.py** that executes the binary data, made from this modules:
-	- **memory.py**, populated both by instructions and data produced by code, stored as words using **word.py**;
-	- **registers.py**;
-	- **counter.py**, used in moth Memory Counter and Program Counter;
-	- **instructions.py**, which contains instruction's names along their type.
+    - **registers.py**;
+    - **memory.py**, populated both by instructions and data produced by code, stored as words using **word.py**;
+    - **piu**: Peripherals Interface Unit, used to input/output registers content;
+    - **counter.py**, used for both Memory Counter and Program Counter;
+    - **instructions.py**, which contains instruction's names along their type.
 
 # Zedecim Architecture
 ## Memory elements

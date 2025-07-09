@@ -1,6 +1,5 @@
 from assembler import Assembler
 from cpu import CPU
-from word import Word
 import sys
 
 class Emulator:

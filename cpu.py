@@ -1,11 +1,8 @@
-from lxml.etree import register_namespace
-from procfs import cpuinfo
-
 from memory import Memory
 from registers import Registers
 from deassembler import deassemble_word
 from word import Word
-from peripheral_interface_unit import PeripheralsInterfaceUnit
+from piu import PeripheralsInterfaceUnit
 
 
 class CPU:
