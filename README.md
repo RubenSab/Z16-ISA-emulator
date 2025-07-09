@@ -16,7 +16,7 @@ emulator = Emulator(
 	memory_byte_size = 64,
 	print_base = 16 # used for printing the CPU state at the end
 )
-emulator.execute_code('example/zero.zed', display_state=True)
+emulator.execute_code('example/zero.zed', display_state=True, print_base=16)
 
 # Or if you already have the binary file ready:
 # emulator.execute_bin('example/test.bin', display_state=True)

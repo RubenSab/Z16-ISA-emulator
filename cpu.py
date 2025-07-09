@@ -30,7 +30,6 @@ class CPU:
         self.memory_size = memory_size
         self.memory = Memory(memory_size)
         self.peripheral_interface_unit = PeripheralsInterfaceUnit(cpu=self)
-        self.print_base = print_base
         self.exit_codes = {
             Word(int('0000', 16)): 'No instructions left to execute.',
             Word(int('1000', 16)): 'Division by zero.',
