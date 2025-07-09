@@ -1,9 +1,12 @@
+from lxml.etree import register_namespace
+from procfs import cpuinfo
+
 from memory import Memory
 from registers import Registers
 from deassembler import deassemble_word
-from registers import REGISTER_NAMES
-from instructions import INSTRUCTIONS, INSTRUCTIONS_LIST
 from word import Word
+from peripheral_interface_unit import PeripheralsInterfaceUnit
+
 
 class CPU:
 
@@ -26,10 +29,11 @@ class CPU:
             "criio": self._custom_register_immediate_input_output,
             "apceq": self._add_to_program_counter_if_X_is_equal_to_zero,
         }
+        self.registers = Registers()
         self.memory_size = memory_size
         self.memory = Memory(memory_size)
+        self.peripheral_interface_unit = PeripheralsInterfaceUnit(cpu=self)
         self.print_base = print_base
-        self.registers = Registers()
         self.exit_codes = {
             Word(int('0000', 16)): 'No instructions left to execute.',
             Word(int('1000', 16)): 'Division by zero.',
@@ -204,16 +208,10 @@ class CPU:
 
     def _custom_register_immediate_input_output(
     self, r1=None, r2=None, r3=None, immediate=None):
-        # placeholder implementation
-        if immediate == Word(0):
-            print(self.registers.read(r2).str_by_base(10))
-        elif immediate == Word(1):
-            print(self.registers.read(r2).str_by_base(16))
-        elif immediate == Word(2):
-            print('To be done')
-        elif immediate == Word(3):
-            self.registers.write(r2, Word(ord(input())))
-            
+        self.peripheral_interface_unit.execute_command(
+            code = immediate,
+            register_name = r2
+        )
         self.memory.program_counter += 1
 
     def _add_to_program_counter_if_X_is_equal_to_zero(

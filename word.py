@@ -3,7 +3,9 @@ import math
 class Word(int):
     DEFAULT_BIT_WIDTH = 16
 
-    def __new__(cls, value, bit_width=None):
+    def __new__(cls, value: str | int, bit_width=None):
+        if isinstance(value, str):
+            value = int(value, 16)
         bit_width = bit_width or cls.DEFAULT_BIT_WIDTH
         bit_mask = (1 << bit_width) - 1
         max_signed = (1 << (bit_width - 1)) - 1

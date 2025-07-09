@@ -13,7 +13,7 @@ li F, 1         # F = 1 constant
 comp X, D, C    # if D == 10, X = 0
 apceq O, 8      # if X == 0, jump to end
 
-criio A, 0      # print current Fibonacci number (A) in decimal format
+criio A, 1      # print current Fibonacci number (A) in decimal format
 
 add E, A, B     # E = A + B (next Fibonacci number)
 add A, B, O     # A = B
@@ -24,4 +24,4 @@ li X, 0         # reset X for unconditional jump
 apceq O, -8     # jump back to loop start
 
 # exit
-and O, O, O     # exit with code 0 (optional)
+and O, O, O     # trigger exit code 0 (optional)
