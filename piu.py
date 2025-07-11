@@ -1,4 +1,6 @@
 from word import Word
+from functools import wraps
+
 class PeripheralsInterfaceUnit:
     def __init__(self, cpu):
         self.cpu = cpu
@@ -23,11 +25,31 @@ class PeripheralsInterfaceUnit:
     def _print_ascii(self, register_name):
         print(chr(self.cpu.registers.read(register_name)))
 
+    def input_exception(func):
+        @wraps(func)
+        def wrapper(self, register_name):
+            try:
+                return func(self, register_name)
+            except ValueError as e:
+                print(
+                    f"\nInput Error: {e}.\n"
+                    f"Ignoring input and setting register {register_name} to 0."
+                )
+                self.cpu.registers.write(register_name, Word(0))
+                return None
+
+        return wrapper
+
+        return wrapper
+
+    @input_exception
     def _input_base_10(self, register_name):
         self.cpu.registers.write(register_name, Word(int(input('> '))))
 
+    @input_exception
     def _input_base_16(self, register_name):
         self.cpu.registers.write(register_name, Word(int(input('> '), 16)))
 
+    @input_exception
     def _input_ascii(self, register_name):
         self.cpu.registers.write(register_name, Word(ord(input('> '))))

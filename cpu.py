@@ -68,22 +68,6 @@ class CPU:
                 break
 
 
-    def display_state(self, base=16):
-        print(
-            f"\nexit code {self.exit_code.str_by_base(base)}: "
-            f"{self.exit_codes[self.exit_code]}"
-        )
-        print(self.memory.str_by_base(base))
-        print(self.registers.str_by_base(base))
-        print(
-            f"memory counter: "
-            f"{self.memory.memory_counter.str_by_base(base)}"
-        )
-        print(
-            f"program counter: "
-            f"{self.memory.program_counter.str_by_base(base)}\n")
-
-
     def execute_parsed_instruction(self, instruction: dict) -> None:
         # call instruction's corresponding function from dictionary
         self.INSTRUCTION_FUNCTIONS[instruction['instruction']](
@@ -91,6 +75,23 @@ class CPU:
             r2 = instruction['second register'],
             r3 = instruction['third register'],
             immediate = instruction['immediate']
+        )
+
+
+    def display_state(self, base=16):
+        print(
+            f"\n{'-'*25}Memory state{'-'*24}\n"
+            f"Exit code {self.exit_code.str_by_base(base)}: "
+            f"{self.exit_codes[self.exit_code]}\n"
+            "\nMemory:\n"
+            f"{self.memory.str_by_base(base)}\n"
+            "\nMemory counter: "
+            f"{self.memory.memory_counter.str_by_base(base)}\n"
+            "Program counter: "
+            f"{self.memory.program_counter.str_by_base(base)}\n"
+            "\nRegisters:\n"
+            f"{self.registers.str_by_base(base)}\n"
+            f"{'-' * 61}\n"
         )
 
 

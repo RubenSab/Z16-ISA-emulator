@@ -34,9 +34,11 @@ class Emulator:
 
 
 if __name__=='__main__':
+    # Get execution settings
     memory_byte_size = int(sys.argv[1])
     code_filename = sys.argv[2]
     print_base = int(sys.argv[3]) if len(sys.argv) > 3 else 16
-    display_state = True if print_base else False
+    display_state = True if print_base is not None else False
+    # Execute code
     emulator = Emulator(memory_byte_size)
     emulator.execute_code(sys.argv[2], display_state, print_base)
