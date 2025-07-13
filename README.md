@@ -12,10 +12,7 @@ Launch `emulator.py` from the command line (`"python emulator.py <memory_byte_si
 ``` python
 from emulator import Emulator
 
-emulator = Emulator(
-	memory_byte_size = 64,
-	print_base = 16 # used for printing the CPU state at the end
-)
+emulator = Emulator(memory_byte_size = 64)
 emulator.execute_code('example/zero.zed', display_state=True, print_base=16)
 
 # Or if you already have the binary file ready:

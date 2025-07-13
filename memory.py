@@ -73,26 +73,30 @@ class Memory:
                 f.write(word.to_bytes())
 
     def str_by_base(self, base=16):
-        if base not in (10, 16):
-            raise ValueError("Base must be 10 or 16")
-        lines = []
-        for i in range(0, len(self.word_memory), 8):
-            # Format address based on base
-            addr = f"{i:04X}" if base == 16 else f"{i:04}"
-            # Format words based on base
-            if base == 16:
-                row_str = " ".join(
-                    word.to_hex()
-                    for word in self.word_memory[i:i+8]
-                )
-            else:  # base == 10
-                row_str = " ".join(
-                    f"{int(word):>6}"
-                    for word in self.word_memory[i:i+8]
-                )
-            lines.append(f"{addr}: {row_str}")
-        return "\n".join(lines)
+        if base not in (2, 10, 16):
+            raise ValueError("Base must be 2, 10 or 16")
 
+        # Set per-line width and word formatter based on base
+        if base == 2:
+            words_per_line = 4
+            format_word = lambda w: f"{w.to_bin():>16}"
+            format_addr = lambda i: f"0x{i:04X}"
+        elif base == 10:
+            words_per_line = 8
+            format_word = lambda w: f"{int(w):>6}"
+            format_addr = lambda i: f"{i: 4}"
+        elif base == 16:
+            words_per_line = 8
+            format_word = lambda w: w.to_hex()
+            format_addr = lambda i: f"0x{i:04X}"
+
+        lines = []
+        for i in range(0, len(self.word_memory), words_per_line):
+            row = self.word_memory[i:i + words_per_line]
+            row_str = " ".join(format_word(word) for word in row)
+            lines.append(f"{format_addr(i)}: {row_str}")
+
+        return "\n".join(lines)
 
     def __repr__(self):
         return self.str_by_base(16)

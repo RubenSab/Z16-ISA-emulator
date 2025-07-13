@@ -27,7 +27,7 @@ class Registers:
         return self.str_by_base(16)
 
     def str_by_base(self, base):
-        if base not in (10, 16):
+        if base not in (2, 10, 16):
             raise ValueError("Base must be 10 or 16")
         return '\n'.join(
             f"{reg}: {val.str_by_base(base)}"

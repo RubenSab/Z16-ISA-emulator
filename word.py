@@ -25,43 +25,64 @@ class Word(int):
     def __binary_op(self, other, op):
         return Word(op(int(self), int(other)), self._bit_width)
 
-    def __add__(self, other): return self.__binary_op(other, lambda a, b: a + b)
-    def __radd__(self, other): return self.__add__(other)
-    def __sub__(self, other): return self.__binary_op(other, lambda a, b: a - b)
-    def __rsub__(self, other): return self.__binary_op(other, lambda a, b: b - a)
-    def __mul__(self, other): return self.__binary_op(other, lambda a, b: a * b)
-    def __rmul__(self, other): return self.__mul__(other)
+    def __add__(self, other):
+        return self.__binary_op(other, lambda a, b: a + b)
+    def __radd__(self, other):
+            return self.__add__(other)
+    def __sub__(self, other):
+            return self.__binary_op(other, lambda a, b: a - b)
+    def __rsub__(self, other):
+            return self.__binary_op(other, lambda a, b: b - a)
+    def __mul__(self, other):
+            return self.__binary_op(other, lambda a, b: a * b)
+    def __rmul__(self, other):
+            return self.__mul__(other)
 
     @classmethod
-    def from_bytes(cls, byte_data: bytes, byteorder='big', signed=False, bit_width=None):
+    def from_bytes(cls, byte_data: bytes,
+    byteorder='big', signed=False, bit_width=None):
         if not isinstance(byte_data, bytes):
             raise TypeError("byte_data must be of type 'bytes'")
         bit_width = bit_width or cls.DEFAULT_BIT_WIDTH
         expected_length = math.ceil(bit_width / 8)
         if len(byte_data) != expected_length:
-            raise ValueError(f"Input length ({len(byte_data)} bytes) does not match expected bit width ({bit_width} bits)")
+            raise ValueError(
+                f"Input length ({len(byte_data)} bytes) does not match"
+                "expected bit width ({bit_width} bits)"
+            )
         value = int.from_bytes(byte_data, byteorder=byteorder, signed=signed)
         return cls(value, bit_width)
 
     def to_bytes(self, byteorder='big', signed=False):
         byte_length = math.ceil(self._bit_width / 8)
         raw_value = int(self) if signed else (int(self) & self._bit_mask)
-        return raw_value.to_bytes(byte_length, byteorder=byteorder, signed=signed)
+        return raw_value.to_bytes(
+                byte_length,
+                byteorder=byteorder,
+                signed=signed
+        )
 
     def to_hex(self):
         hex_digits = math.ceil(self._bit_width / 4)
         return f"{int(self) & self._bit_mask:0{hex_digits}X}"
 
+    def to_bin(self):
+        value = int(self) & self._bit_mask
+        return f"{value:0{self._bit_width}b}"
+
     def __str__(self):
         return self.to_hex()
 
-    def str_by_base(self, base):
-        if base not in (10, 16):
-            raise ValueError("Base must be 10 or 16")
+    def str_by_base(self, base) -> str:
+        if base not in (2, 10, 16):
+            raise ValueError("Base must be 2, 10 or 16")
+        elif base == 2:
+            return str(f"0b{self.to_bin()}")
+        elif base == 10:
+            return str(int(self))
         if base == 16:
             return str(f"0x{self.to_hex()}")
-        elif base == 10:
-            return int(self)
+        return None
 
     def __repr__(self):
         return self.str_by_base(16)

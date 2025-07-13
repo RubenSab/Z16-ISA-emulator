@@ -7,7 +7,7 @@ from piu import PeripheralsInterfaceUnit
 
 class CPU:
 
-    def __init__(self, memory_size, print_base = 16):
+    def __init__(self, memory_size):
         self.INSTRUCTION_FUNCTIONS = {
             "and": self._bitwise_and,
             "or": self._bitwise_or,
@@ -80,15 +80,20 @@ class CPU:
 
     def display_state(self, base=16):
         print(
-            f"\n{'-'*25}Memory state{'-'*24}\n"
-            f"Exit code {self.exit_code.str_by_base(base)}: "
-            f"{self.exit_codes[self.exit_code]}\n"
-            "\nMemory:\n"
+            f"{'-'*25}Memory state{'-'*24}\n"
+            
+            "Memory:\n"
             f"{self.memory.str_by_base(base)}\n"
+            
+            f"\nExit code {self.exit_code.str_by_base(base)}: "
+            f"{self.exit_codes[self.exit_code]}\n"
+            
             "\nMemory counter: "
             f"{self.memory.memory_counter.str_by_base(base)}\n"
+            
             "Program counter: "
             f"{self.memory.program_counter.str_by_base(base)}\n"
+            
             "\nRegisters:\n"
             f"{self.registers.str_by_base(base)}\n"
             f"{'-' * 61}\n"
