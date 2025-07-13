@@ -172,9 +172,9 @@ class CPU:
         a = self.registers.read(r2)
         b = self.registers.read(r3)
         if a > b:
-            result = Word(int('2', 16))
-        elif a < b:
             result = Word(int('1', 16))
+        elif a < b:
+            result = Word(int('-1', 16))
         else:
             result = Word(int(0))
         self.registers.write(r1, result)

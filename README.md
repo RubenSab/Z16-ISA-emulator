@@ -71,8 +71,8 @@ Instructions have only 2 possible formats, in which fields are evenly divided in
 7. `mul` (multiplication)
 8. `div` (division)
 9. `comp`, sets r1 to:
-	- `10` if r2>r3,
-	- `1` if r2<r3,
+	- `1` if r2>r3,
+	- `-1` if r2<r3,
 	- `0` if r2=r3.
 
 #### RI type: a *register* and an *immediate* as *input* and output either in a register, a memory location, the memory counter, the program counter or a peripheral
