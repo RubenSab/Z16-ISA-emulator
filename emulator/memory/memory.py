@@ -1,6 +1,5 @@
-import math
-from word import Word
-from counter import Counter
+from emulator.word import Word
+from emulator.memory.counter import Counter
 
 class MemoryOverflowError(Exception):
     pass

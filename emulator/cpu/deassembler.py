@@ -1,19 +1,6 @@
-from word import Word
-from instructions import INSTRUCTIONS, INSTRUCTIONS_LIST
-from registers import REGISTER_NAMES
+from emulator.word import Word
+from emulator.constants import INSTRUCTIONS, INSTRUCTIONS_LIST, REGISTER_NAMES
 
-#    def deassemble(self, filename) -> list:
-#        with open(filename, "rb") as f:
-#            byte_sequence = f.read()
-#
-#        word_strings = [
-#            self._deassemble_word(
-#                str(Word.from_bytes(byte_sequence[i:i+2]).to_hex())
-#            )
-#            for i in range(0, len(byte_sequence), 2)
-#        ]
-
-#        return word_strings
 
 def deassemble_word(word: Word) -> dict:
     word = str(word)
@@ -21,7 +8,6 @@ def deassemble_word(word: Word) -> dict:
     instruction_type = INSTRUCTIONS[instruction]
     if instruction_type == 'R':
         return {
-            #"type": instruction_type,
             "instruction": instruction,
             "first register": REGISTER_NAMES[int(word[1], 16)],
             "second register": REGISTER_NAMES[int(word[2], 16)],
@@ -30,7 +16,6 @@ def deassemble_word(word: Word) -> dict:
         }
     elif instruction_type == 'RI':
         return {
-            #"type": instruction_type,
             "instruction": instruction,
             "first register": None,
             "second register": REGISTER_NAMES[int(word[1], 16)],

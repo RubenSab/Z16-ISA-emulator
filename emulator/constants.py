@@ -1,3 +1,5 @@
+REGISTER_NAMES = list("OABCDEFGHIJKLMNX")
+
 INSTRUCTIONS = {
     "and": 'R',
     "or": 'R',

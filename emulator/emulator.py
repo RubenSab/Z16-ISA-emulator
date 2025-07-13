@@ -1,5 +1,5 @@
-from assembler import Assembler
-from cpu import CPU
+from emulator.assembler import Assembler
+from emulator.cpu.cpu import CPU
 import sys
 
 class Emulator:

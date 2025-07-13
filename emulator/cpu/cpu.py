@@ -1,8 +1,8 @@
-from memory import Memory
-from registers import Registers
-from deassembler import deassemble_word
-from word import Word
-from piu import PeripheralsInterfaceUnit
+from emulator.memory.memory import Memory
+from emulator.cpu.registers import Registers
+from emulator.cpu.deassembler import deassemble_word
+from emulator.word import Word
+from emulator.piu import PeripheralsInterfaceUnit
 
 
 class CPU:

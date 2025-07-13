@@ -1,6 +1,6 @@
-from word import Word
-from registers import REGISTER_NAMES
-from instructions import INSTRUCTIONS, INSTRUCTIONS_LIST
+from emulator.word import Word
+from emulator.constants import INSTRUCTIONS, INSTRUCTIONS_LIST, REGISTER_NAMES
+
 
 class InvalidInstruction(Exception):
     pass

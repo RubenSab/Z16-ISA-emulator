@@ -1,6 +1,6 @@
-from word import Word
+from emulator.word import Word
+from emulator.constants import REGISTER_NAMES
 
-REGISTER_NAMES = list("OABCDEFGHIJKLMNX")
 
 class RegisterNameError(Exception):
     pass

@@ -1,4 +1,4 @@
-from emulator import Emulator
+from emulator.emulator import Emulator
 
 if __name__=='__main__':
 
