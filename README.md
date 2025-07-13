@@ -102,7 +102,7 @@ mul O, O, O -> triggers exit code 0x7000: Custom I/O exit code 0x7000.
 div O, O, O -> triggers exit code 0x8000: Custom I/O exit code 0x8000.
 comp O, O, O -> triggers exit code 0x9000: Custom I/O exit code 0x9000.
 ```
-### `piu` immediate fields
+### `piu` immediate fields **as currently implemented in this emulator**
 
 *Reminder: the immediate field of `piu` and other RI-type instructions can be a signed value in [-128, 127], so the Peripheral Interface Unit commands can only have codes in this range*.
 
@@ -111,6 +111,7 @@ comp O, O, O -> triggers exit code 0x9000: Custom I/O exit code 0x9000.
 2. use Console device to print the register content in base 2.
 10. use Console device to print the register content in base 10.
 16. use Console device to print the register content in base 16.
+20. use Console device to print the register content in base 2, with ' ' as zeroes and '█' (U+2588) as ones. Useful to "draw" with numbers. 
 
 #### Inputs (add minus before code)
 1. use Console device to input an ascii character to the register.

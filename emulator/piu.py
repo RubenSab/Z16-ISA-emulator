@@ -12,6 +12,7 @@ class PeripheralsInterfaceUnit:
             Word(2): self._print_base_2,
             Word(10): self._print_base_10,
             Word(16): self._print_base_16,
+            Word(20): self._print_binary_blocks,
             # Inputs
             Word(-1): self._input_ascii,
             Word(-2): self._input_base_2,
@@ -29,11 +30,11 @@ class PeripheralsInterfaceUnit:
 
     def _print_base_10(self, register_name):
         self.console.output(
-            self.cpu.registers.read(register_name).str_by_base(10)
+            str(self.cpu.registers.read(register_name))
         )
     def _print_base_2(self, register_name):
         self.console.output(
-            self.cpu.registers.read(register_name).str_by_base(2)
+            self.cpu.registers.read(register_name).to_bin()
         )
 
     def _print_ascii(self, register_name):
@@ -43,9 +44,14 @@ class PeripheralsInterfaceUnit:
 
     def _print_base_16(self, register_name):
         self.console.output(
-            self.cpu.registers.read(register_name).str_by_base(16)
+            self.cpu.registers.read(register_name).to_hex()
         )
 
+    def _print_binary_blocks(self, register_name):
+        self.console.output(
+            self.cpu.registers.read(register_name).to_bin()
+            .replace('0', ' ').replace('1', '█')
+        )
     # Input commands
 
     def input_exception(func):
