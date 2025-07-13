@@ -13,7 +13,7 @@ li F, 1         # F = 1 constant
 comp X, D, C    # if D == 10, X = 0
 apceq O, 8      # if X == 0, jump to end
 
-criio A, 1      # print current Fibonacci number (A) in decimal format
+piu A, 10      # print current Fibonacci number (A) in base 10
 
 add E, A, B     # E = A + B (next Fibonacci number)
 add A, B, O     # A = B

@@ -1,9 +1,11 @@
-class Console:
-        def __init__(self):
-            pass
+import readchar
 
-        def get_input(self):
-            return input('')
+class Console():
+    def __init__(self):
+        pass
 
-        def output(self, data):
-            print(data)
+    def get_input(self):
+        return readchar.readchar()
+
+    def output(self, data):
+        print(data)

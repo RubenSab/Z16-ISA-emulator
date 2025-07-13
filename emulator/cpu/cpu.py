@@ -23,7 +23,7 @@ class CPU:
             "amc": self._add_to_memory_counter,
             "lwmc": self._load_word,
             "swmc": self._store_word,
-            "criio": self._custom_register_immediate_input_output,
+            "piu": self._custom_register_immediate_input_output,
             "apceq": self._add_to_program_counter_if_X_is_equal_to_zero,
         }
         self.registers = Registers()

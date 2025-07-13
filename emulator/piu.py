@@ -1,3 +1,4 @@
+from emulator.devices.random_number_generator import RandomNumberGenerator
 from emulator.word import Word
 from functools import wraps
 from emulator.devices.console import Console
@@ -7,17 +8,21 @@ class PeripheralsInterfaceUnit:
         self.cpu = cpu
         self.commands = {
             # Outputs
-            Word(1): self._print_base_10,
+            Word(1): self._print_ascii,
             Word(2): self._print_base_2,
-            Word(3): self._print_ascii,
-            Word(4): self._print_base_16,
+            Word(10): self._print_base_10,
+            Word(16): self._print_base_16,
             # Inputs
-            Word(-1): self._input_base_10,
+            Word(-1): self._input_ascii,
             Word(-2): self._input_base_2,
-            Word(-3): self._input_ascii,
-            Word(-4): self._input_base_16,
+            Word(-10): self._input_base_10,
+            Word(-16): self._input_base_16,
+            # Overwrites
+            Word(-42): self._rng_out,
         }
+
         self.console = Console()
+        self.rng = RandomNumberGenerator()
 
     def execute_command(self, code: Word, register_name: str):
         self.commands[code](register_name)
@@ -41,6 +46,8 @@ class PeripheralsInterfaceUnit:
             self.cpu.registers.read(register_name).str_by_base(16)
         )
 
+    # Input commands
+
     def input_exception(func):
         @wraps(func)
         def wrapper(self, register_name):
@@ -50,11 +57,10 @@ class PeripheralsInterfaceUnit:
                 print(
                     f"\nInput Error: {e}.\n"
                     f"Ignoring input and setting register {register_name} to 0."
+                    f"\n"
                 )
                 self.cpu.registers.write(register_name, Word(0))
                 return None
-
-        return wrapper
 
         return wrapper
 
@@ -77,3 +83,10 @@ class PeripheralsInterfaceUnit:
     def _input_base_16(self, register_name):
         data = self.console.get_input()
         self.cpu.registers.write(register_name, Word(int(data, 16)))
+
+    @input_exception
+    def _rng_out(self, register_name):
+        data = self.rng.get_input(
+            self.cpu.registers.read(register_name)
+        )
+        self.cpu.registers.write(register_name, Word(data))

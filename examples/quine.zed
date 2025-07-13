@@ -18,7 +18,7 @@ comp X, B, C   # X=0 if B==C
 apceq O, 7     # if X==0 jump to loop end, so 7 instructions (not lines) down
 
 lwmc D, +0     # write memory[MC + 0] to D
-criio D, 4     # print D in hex format
+piu D, 16     # print D in base 16
 
 amc O, 1       # increment memory counter by 1
 add B, B, A    # increment B by 1

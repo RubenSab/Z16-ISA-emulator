@@ -13,10 +13,12 @@ Launch `emulator.py` from the command line (`"python emulator.py <memory_byte_si
 from emulator import Emulator
 
 emulator = Emulator(memory_byte_size = 64)
-emulator.execute_code('example/zero.zed', display_state=True, print_base=16)
+emulator.execute_code('example/zero.zed')
+emulator.cpu.display_state(base = 16)
 
 # Or if you already have the binary file ready:
-# emulator.execute_bin('example/test.bin', display_state=True)
+# emulator.execute_bin('example/test.bin')
+# emulator.cpu.display_state(base = 16)
 ```
 
 # Emulator structure
@@ -54,7 +56,7 @@ Instructions have only 2 possible formats, in which fields are evenly divided in
 - **RI** (Register immediate type):
 	- 1 nibble for the instruction code,
 	- 1 nibble for the first register (either target or first operand's register),
-	- 2 nibbles for the signed immediate field (-128 to 127)
+	- 2 nibbles for the signed immediate field [-128 to 127]
 
 ### Instruction list
 
@@ -81,7 +83,7 @@ Instructions have only 2 possible formats, in which fields are evenly divided in
 11. `amc` (adds register + immediate to memory counter)
 12. `lwmc` (loads word to register from address = memory counter + immediate)
 13. `swmc` (stores word in register to address = memory counter + immediate)
-14. `criio` (*Custom Register Immediate Input Output*: inputs to or outputs the register content according to the mode expressed in the immediate field. Its behaviour depends on the custom architecture implementation.)
+14. `piu` (*Peripherals Interface Unit*: inputs to or outputs the register content using the device/mode expressed in the immediate field. Its behaviour can depend on the custom architecture implementation.)
 15. `apceq` (adds register + immediate to program counter if the register **X** is equal to 0)
 
 ### Special exit code instructions
@@ -100,6 +102,24 @@ mul O, O, O -> triggers exit code 0x7000: Custom I/O exit code 0x7000.
 div O, O, O -> triggers exit code 0x8000: Custom I/O exit code 0x8000.
 comp O, O, O -> triggers exit code 0x9000: Custom I/O exit code 0x9000.
 ```
+### `piu` immediate fields
+
+*Reminder: the immediate field of `piu` and other RI-type instructions can be a signed value in [-128, 127], so the Peripheral Interface Unit commands can only have codes in this range*.
+
+#### Outputs
+1. use Console device to print the register content as an ascii character.
+2. use Console device to print the register content in base 2.
+10. use Console device to print the register content in base 10.
+16. use Console device to print the register content in base 16.
+
+#### Inputs (add minus before code)
+1. use Console device to input an ascii character to the register.
+2. use Console device to input a base 2 number to the register.
+10. use Console device to input a base 10 number to the register.
+16. use Console device to input a base 16 number to the register.
+
+#### Overwrites
+42. use RandomNumberGenerator to overwrite the register to a random number in the interval with bounds 0 (included) and register content (included) as a signed integer.
 
 # Zedecim Assembly syntax
 

@@ -15,7 +15,7 @@ INSTRUCTIONS = {
     "amc": "RI",
     "lwmc": "RI",
     "swmc": "RI",
-    "criio": "RI",
+    "piu": "RI",
     "apceq": "RI",
 }
 
