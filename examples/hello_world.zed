@@ -1,0 +1,43 @@
+# This program prints "Hello, World!". It works on a memory of 64 bits or more.
+
+li C, 72
+piu C, 1
+
+li C, 101
+piu C, 1
+
+li C, 108
+piu C, 1
+
+li C, 108
+piu C, 1
+
+li C, 111
+piu C, 1
+
+li C, 44
+piu C, 1
+
+li C, 32
+piu C, 1
+
+li C, 87
+piu C, 1
+
+li C, 111
+piu C, 1
+
+li C, 114
+piu C, 1
+
+li C, 108
+piu C, 1
+
+li C, 100
+piu C, 1
+
+li C, 33
+piu C, 1
+
+li C, 10
+piu C, 1

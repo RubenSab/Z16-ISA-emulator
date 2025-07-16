@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Zedecim-ISA-Emulator"
+version = "0.1.0"
+description = "Assembler + CPU emulator for my custom instruction set architecture Zedecim."
+authors = [{ name = "Ruben Sabatini", email = "contact@rubensabatini.com" }]
+dependencies = ["readchar~=4.2.1"]
+
+[project.scripts]
+zedecim = "zedecim_isa_emulator.main:main"
