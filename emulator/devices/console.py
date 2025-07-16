@@ -8,4 +8,4 @@ class Console():
         return readchar.readchar()
 
     def output(self, data):
-        print(data)
+        print(data, end='')

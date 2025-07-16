@@ -23,7 +23,7 @@ class CPU:
             "amc": self._add_to_memory_counter,
             "lwmc": self._load_word,
             "swmc": self._store_word,
-            "piu": self._custom_register_immediate_input_output,
+            "piu": self._peripherals_interface_unit,
             "apceq": self._add_to_program_counter_if_X_is_equal_to_zero,
         }
         self.registers = Registers()
@@ -205,7 +205,7 @@ class CPU:
         )
         self.memory.program_counter += 1
 
-    def _custom_register_immediate_input_output(
+    def _peripherals_interface_unit(
     self, r1=None, r2=None, r3=None, immediate=None):
         self.peripheral_interface_unit.execute_command(
             code = immediate,
