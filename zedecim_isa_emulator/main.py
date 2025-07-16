@@ -1,20 +1,39 @@
-import sys
-from emulator.emulator import Emulator
+import argparse
+from zedecim_isa_emulator.emulator.emulator import Emulator
+
 
 def main():
-    # Get execution settings
-    memory_byte_size = int(sys.argv[1])
-    code_filename = sys.argv[2]
-    # Execute code
-    emulator = Emulator(memory_byte_size)
-    emulator.execute_code(code_filename)
-    # Print CPU state
-    numbers_base = int(sys.argv[3]) if len(sys.argv) > 3 else None
-    if numbers_base:
-        emulator.cpu.display_state(numbers_base)
-    # Store input/output history
-    history_file = sys.argv[4] if len(sys.argv) > 4 else None
-    if history_file:
-        emulator.cpu.piu.console.export_history(history_file)
-    # Reset emulator
+    parser = argparse.ArgumentParser(
+        prog="zedecim",
+        description="Zedecim ISA Emulator: Run programs on the Zedecim virtual CPU."
+    )
+
+    parser.add_argument(
+        "memory_byte_size", type=int,
+        help="Amount of memory (in bytes) to allocate"
+    )
+    parser.add_argument(
+        "code_filename",
+        help="Path to the assembly code file (.zed) to execute"
+    )
+    parser.add_argument(
+        "numbers_base", type=int, nargs="?",
+        help="Optional number base for displaying CPU state (e.g., 2, 10, 16)"
+    )
+    parser.add_argument(
+        "history_file", nargs="?",
+        help="Optional path to save I/O history"
+    )
+
+    args = parser.parse_args()
+
+    emulator = Emulator(args.memory_byte_size)
+    emulator.execute_code(args.code_filename)
+
+    if args.numbers_base:
+        emulator.cpu.display_state(args.numbers_base)
+
+    if args.history_file:
+        emulator.cpu.piu.console.export_history(args.history_file)
+
     emulator.reset()
