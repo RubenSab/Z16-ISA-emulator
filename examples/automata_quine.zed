@@ -31,7 +31,7 @@ add C, C, I    # increment counter by one
 li X, 0        # X=0 to make the next jump unconditional
 apceq O, -8    # unconditionally jump to `comp X, C, E`
 
-
+piu N, 1
 # QUINE
 
 li B, 0

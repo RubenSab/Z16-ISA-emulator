@@ -29,7 +29,7 @@ class CPU:
         self.registers = Registers()
         self.memory_size = memory_size
         self.memory = Memory(memory_size)
-        self.peripheral_interface_unit = PeripheralsInterfaceUnit(cpu=self)
+        self.piu = PeripheralsInterfaceUnit(cpu=self)
         self.exit_codes = {
             Word(int('0000', 16)): 'No instructions left to execute.',
             Word(int('1000', 16)): 'Division by zero.',
@@ -207,7 +207,7 @@ class CPU:
 
     def _peripherals_interface_unit(
     self, r1=None, r2=None, r3=None, immediate=None):
-        self.peripheral_interface_unit.execute_command(
+        self.piu.execute_command(
             code = immediate,
             register_name = r2
         )

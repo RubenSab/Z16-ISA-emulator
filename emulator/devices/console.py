@@ -1,11 +1,18 @@
 import readchar
 
-class Console():
+class Console:
     def __init__(self):
-        pass
+        self.history = []
 
     def get_input(self):
-        return readchar.readchar()
+        data = readchar.readchar()
+        self.history.append(data + "\n")
+        return data
 
     def output(self, data):
+        self.history.append(data)
         print(data, end='')
+
+    def export_history(self, filename):
+        with open(filename, "w") as f:
+            f.write(''.join(self.history))
