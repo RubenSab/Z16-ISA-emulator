@@ -30,7 +30,7 @@ class PeripheralsInterfaceUnit:
 
     def _print_base_10(self, register_name):
         self.console.output(
-            str(self.cpu.registers.read(register_name))
+            self.cpu.registers.read(register_name).str_by_base(10)
         )
     def _print_base_2(self, register_name):
         self.console.output(

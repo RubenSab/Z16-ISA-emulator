@@ -4,14 +4,16 @@
 
 li A, 1         # load constant 1 to A
 li C, 10        # load constant 10 to C
+li N, 10        # newline character
 
 # loop
-
 comp X, B, C   # X=0 if B==C
-apceq O, 7     # if X==0 jump to loop end, so 7 instructions (not lines) down
+apceq O, 6     # if X==0 jump to loop end, so 5 instructions (not lines) down
+
 piu B, 10      # print B in base 10
-swmc B, +0     # store B to memory[MC + 0]
-amc O, 1       # increment memory counter by 1
+piu N, 1
+
 add B, B, A    # increment B by 1
+
 li X, 0        # reset X to 0 to jump unconditionally
-apceq O, -7    # jump to loop start, so 7 instructions (not lines) up
+apceq O, -6    # jump to loop start, so 5 instructions (not lines) up
