@@ -1,0 +1,6 @@
+li A, 5      # load 5 to A
+piu A, -42   # overwrite A to a number between 0 and 5
+
+li B, 1
+add A, A, B  # increment A by 1, making the range [1, 6]
+piu A, 10    # print A as a number in base 10

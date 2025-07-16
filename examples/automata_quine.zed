@@ -1,0 +1,56 @@
+# At least 64 bytes memory necessary.
+# This program renders on console a 16x16 bit fractal triangle
+# generated using a bitwise optimization of rule 102 cellular automata.
+# Then, it prints its own source code (like a quine) in "blocky" binary .
+
+li N, 10       # N = Newline character
+
+# TRIANGLE
+
+li E, 16       # E = constant iteration's End
+li A, -1       # A = constant shift Amount
+
+li L, 1        # L = Line of cells
+li C, 0        # C = iteration Counter
+li I, 1        # I = Iteration step
+
+li X, 0        # make the first jump unconditional
+
+# Loop
+
+comp X, C, E   # X=0 if counter == end
+apceq O, 8     # jump to end if X==0
+
+piu L, 20      # print cells line in "blocky" binary
+piu N, 1       # print newline character
+
+sh B, L, A     # B = cells shifted to the left by one
+xor L, L, B    # cells = cells xor B
+add C, C, I    # increment counter by one
+
+li X, 0        # X=0 to make the next jump unconditional
+apceq O, -8    # unconditionally jump to `comp X, C, E`
+
+
+# QUINE
+
+li B, 0
+amc O, -16     # decrement memory counter to reach the start of TRIANGLE
+
+li A, 1        # load constant 1 to A
+li C, 16       # load constant 16 to C because TRIANGLE has 16 instructions
+
+# loop
+
+comp X, B, C   # X=0 if B==C
+apceq O, 8     # if X==0 jump to loop end, so 7 instructions (not lines) down
+
+lwmc D, +0     # write memory[MC + 0] to D
+piu D, 20      # print D in blocky binary
+piu N, 1       # print newline character
+
+amc O, 1       # increment memory counter by 1
+add B, B, A    # increment B by 1
+
+li X, 0        # reset X to 0 to jump unconditionally
+apceq O, -8    # jump to loop start, so 7 instructions (not lines) up

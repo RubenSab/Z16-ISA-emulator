@@ -1,0 +1,28 @@
+# This program renders on console a 16x16 bit fractal triangle
+# generated using a bitwise optimization of rule 102 cellular automata.
+
+li N, 10       # N = Newline character
+
+li E, 16       # E = constant iteration's End
+li A, -1       # A = constant shift Amount
+
+li L, 1        # L = Line of cells
+li C, 0        # C = iteration Counter
+li I, 1        # I = Iteration step
+
+li X, 0        # make the first jump unconditional
+
+# Loop
+
+comp X, C, E   # X=0 if counter == end
+apceq O, 8     # jump to end if X==0
+
+piu L, 20      # print cells line in "blocky" binary
+piu N, 1       # print newline character
+
+sh B, L, A     # B = cells shifted to the left by one
+xor L, L, B    # cells = cells xor B
+add C, C, I    # increment counter by one
+
+li X, 0        # X=0 to make the next jump unconditional
+apceq O, -8    # unconditionally jump to `comp X, C, E`
