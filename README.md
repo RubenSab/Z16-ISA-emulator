@@ -1,16 +1,32 @@
 
 Zedecim is an Instruction Set (emulated) Architecture which has sixteen instructions (Sedecim in latin) and it can only work with signed 16 bit integers (Z in the name stands for the set of integer numbers).
 
+# Emulator installation (CLI)
+
+1. run `git clone https://github.com/RubenSab/Zedecim-ISA-emulator`
+2. move into the cloned repo: `cd Zedecim-ISA-emulator`
+3. run `pip install .`
+
 # Usage
 
-Launch `emulator.py` from the command line (`"python emulator.py <memory_byte_size> <filename> [print_base]"`) or do the following:
+## As a CLI program
+Run `zedecim <memory_byte_size> <code_filename> [print_base] [history_file]`
 
-1. Import `emulator` (emulator.py) from `Emulator`.
-2. Initialize the emulator with the desired memory size in bytes.
-3. Then you can either **run Zedecim assembly code**, optionally specifying a file where to export the memory in a binary file, or **run from a binary file**.
+Arguments:
+- memory_byte_size: Amount of memory (in bytes) to allocate
+- code_filename: Path to the assembly code file to execute
+- numbers_base: Optional number base for displaying CPU state (e.g., 2, 10, 16)
+- history_file: Optional path to save I/O history
+
+## As a python class
+
+Move `emulator` directory into your current project directory, then you can
+interact with the emulator using its methods.
+
+For more information, read emulator.py methods docstrings.
 
 ``` python
-from emulator import Emulator
+from emulator.emulator import Emulator
 
 emulator = Emulator(memory_byte_size = 64)
 emulator.execute_code('example/zero.zed')
