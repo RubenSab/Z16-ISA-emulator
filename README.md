@@ -136,7 +136,7 @@ comp O, O, O -> triggers exit code 0x9000: Custom I/O exit code 0x9000.
 16. use Console device to input a base 16 number to the register.
 
 #### Overwrites
-42. use RandomNumberGenerator to overwrite the register to a random number in the interval with bounds 0 (included) and register content (included) as a signed integer.
+42. use RandomNumberGenerator to set the register to a random 16 bit (signed) number.
 
 # Zedecim Assembly syntax
 

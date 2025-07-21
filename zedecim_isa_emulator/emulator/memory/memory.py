@@ -1,5 +1,5 @@
-from emulator.word import Word
-from emulator.memory.counter import Counter
+from zedecim_isa_emulator.emulator.word import Word
+from zedecim_isa_emulator.emulator.memory.counter import Counter
 
 class MemoryOverflowError(Exception):
     pass

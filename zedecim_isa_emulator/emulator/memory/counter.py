@@ -1,4 +1,4 @@
-from emulator.word import Word
+from zedecim_isa_emulator.emulator.word import Word
 
 class Counter:
     def __init__(self, max_address, value=0):

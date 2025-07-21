@@ -1,7 +1,7 @@
-from emulator.devices.random_number_generator import RandomNumberGenerator
-from emulator.word import Word
 from functools import wraps
-from emulator.devices.console import Console
+from zedecim_isa_emulator.emulator.devices.random_number_generator import RandomNumberGenerator
+from zedecim_isa_emulator.emulator.word import Word
+from zedecim_isa_emulator.emulator.devices.console import Console
 
 class PeripheralsInterfaceUnit:
     def __init__(self, cpu):
@@ -18,7 +18,6 @@ class PeripheralsInterfaceUnit:
             Word(-2): self._input_base_2,
             Word(-10): self._input_base_10,
             Word(-16): self._input_base_16,
-            # Overwrites
             Word(-42): self._rng_out,
         }
 
@@ -90,9 +89,6 @@ class PeripheralsInterfaceUnit:
         data = self.console.get_input()
         self.cpu.registers.write(register_name, Word(int(data, 16)))
 
-    @input_exception
     def _rng_out(self, register_name):
-        data = self.rng.get_input(
-            self.cpu.registers.read(register_name)
-        )
+        data = self.rng.get_input()
         self.cpu.registers.write(register_name, Word(data))

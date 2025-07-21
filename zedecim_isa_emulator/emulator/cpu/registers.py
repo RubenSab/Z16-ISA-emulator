@@ -1,5 +1,5 @@
-from emulator.word import Word
-from emulator.constants import REGISTER_NAMES
+from zedecim_isa_emulator.emulator.word import Word
+from zedecim_isa_emulator.emulator.constants import REGISTER_NAMES
 
 
 class RegisterNameError(Exception):

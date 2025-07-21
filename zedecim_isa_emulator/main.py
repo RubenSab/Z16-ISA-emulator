@@ -1,4 +1,7 @@
 import argparse
+
+from mercurial.thirdparty.zope.interface import named
+
 from zedecim_isa_emulator.emulator.emulator import Emulator
 
 
@@ -37,3 +40,6 @@ def main():
         emulator.cpu.piu.console.export_history(args.history_file)
 
     emulator.reset()
+
+if __name__ == '__main__':
+    main()

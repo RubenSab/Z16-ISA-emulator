@@ -1,5 +1,5 @@
-from emulator.word import Word
-from emulator.constants import INSTRUCTIONS, INSTRUCTIONS_LIST, REGISTER_NAMES
+from zedecim_isa_emulator.emulator.word import Word
+from zedecim_isa_emulator.emulator.constants import INSTRUCTIONS, INSTRUCTIONS_LIST, REGISTER_NAMES
 
 
 class InvalidInstruction(Exception):

@@ -1,5 +1,5 @@
-from emulator.assembler import Assembler
-from emulator.cpu.cpu import CPU
+from zedecim_isa_emulator.emulator.assembler import Assembler
+from zedecim_isa_emulator.emulator.cpu.cpu import CPU
 
 class Emulator:
     def __init__(self, memory_byte_size):

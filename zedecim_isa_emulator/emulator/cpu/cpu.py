@@ -1,8 +1,8 @@
-from emulator.memory.memory import Memory
-from emulator.cpu.registers import Registers
-from emulator.cpu.deassembler import deassemble_word
-from emulator.word import Word
-from emulator.piu import PeripheralsInterfaceUnit
+from zedecim_isa_emulator.emulator.memory.memory import Memory
+from zedecim_isa_emulator.emulator.cpu.registers import Registers
+from zedecim_isa_emulator.emulator.cpu.deassembler import deassemble_word
+from zedecim_isa_emulator.emulator.word import Word
+from zedecim_isa_emulator.emulator.piu import PeripheralsInterfaceUnit
 
 
 class CPU:

@@ -1,11 +1,4 @@
-li N, 10     # newline character
-li A, 5      # load 5 to A
-
-# Get random number in [1, 6] range
-piu A, -42   # overwrite A to a number between 0 and 5
-li B, 1
-add A, A, B  # increment A by 1, making the range [1, 6]
-
-# Print random number
-piu A, 10    # print A as a number in base 10
+piu A, -42
+piu A, 10
+li N, 10
 piu N, 1
