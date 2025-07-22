@@ -13,10 +13,19 @@ Zedecim is an Instruction Set (emulated) Architecture which has sixteen instruct
 Run `zedecim <memory_byte_size> <code_filename> [print_base] [history_file]`
 
 Arguments:
-- memory_byte_size: Amount of memory (in bytes) to allocate
+- memory_byte_size: Amount of memory (in bytes) to allocate, make sure to allocate enough memory to run the program properly.
 - code_filename: Path to the assembly code file to execute
 - numbers_base: Optional number base for displaying CPU state (e.g., 2, 10, 16)
 - history_file: Optional path to save I/O history
+
+Examples:
+``` bash
+zedecim 64 examples/automata.zed 16
+```
+
+``` bash
+zedecim 32 examples/dice.zed
+```
 
 ## As a python class
 

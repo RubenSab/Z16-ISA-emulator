@@ -1,4 +1,30 @@
-piu A, -42
-piu A, 10
-li N, 10
-piu N, 1
+# This program generates a random number from 1 to 6 included.
+# It works on a memory of at least 30 bytes.
+
+# 1. Get a random number in an interval [-2^n-1; 2^n] with the closest width possible
+# to the interval [1; 6]
+
+piu A, -42     # load random 16 bits number to A
+
+li I, 13
+sh A, A, I     # shift right A by 13 bits, to get a 3 bit range = [-4,3]
+
+li I, 5
+add A, A, I    # increment A by 5, new range = [1, 8]
+
+# 2. If the number is bigger than 6 (25% probability), reject and try again.
+
+li I, 6
+comp X, A, I   # compare A to 6 (X = 1 if A>6)
+
+li I, -1
+add X, X, I    # decrement X by 1 to make it 0 if A>6
+
+apceq O, -9    # if X=0 (A>6), reject random number and start again
+
+# 3. Print the result
+
+piu A, 10      # print A
+
+li I, 10
+piu I, 1       # print newline
